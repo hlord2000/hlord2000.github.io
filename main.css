@@ -1,0 +1,15 @@
+#logo {
+	height: 10vh;
+	width: auto;
+}
+
+#mainBoard {
+	background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/County_Courthouse_and_Judicial_Center_in_Athens.JPG/1600px-County_Courthouse_and_Judicial_Center_in_Athens.JPG);
+	height: 40vh;
+}
+
+.nav-item {
+	font-size: 1.2em;
+	font-family: 'PT Sans', sans-serif;
+	color: #fff;
+}

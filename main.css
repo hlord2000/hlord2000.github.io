@@ -1,15 +1,26 @@
-#logo {
-	height: 10vh;
-	width: auto;
+div > ul {
+	list-style-type:none;
 }
 
-#mainBoard {
-	background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/County_Courthouse_and_Judicial_Center_in_Athens.JPG/1600px-County_Courthouse_and_Judicial_Center_in_Athens.JPG);
-	height: 40vh;
+p {
+	font-family: garamond, serif;
 }
 
-.nav-item {
-	font-size: 1.2em;
-	font-family: 'PT Sans', sans-serif;
-	color: #fff;
+li > h4 {
+	font-family: garamond, serif;
+}
+
+.highlight_yellow {
+    background-color: #fff2ac;
+    background-image: linear-gradient(to right, #ffe359 0%, #ffe359 100%);
+}
+
+.highlight_blue {
+    background-color: #ACC9FF;
+    background-image: linear-gradient(to right, #ACC9FF 0%, #ACC9FF 100%);
+}
+
+.highlight_green {
+    background-color: #BEFFAC;
+    background-image: linear-gradient(to right, #BEFFAC 0%, #BEFFAC 100%);
 }

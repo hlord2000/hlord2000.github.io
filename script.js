@@ -61,7 +61,7 @@ let capacitor_decade = new Map([
 ]);
 
 let rc_args = {
-    "timeConstant": "1 sec",
+    "timeConstant": "1",
     "units": "s",
     "tolerance": 10,
     "resistorDecade": "1kR",

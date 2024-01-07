@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ohmout.io</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Create a text box labelled time constant and a drop down with 4 items to be filled. Then create two results textboxes that will be filled in by a javascript function as the inputs change -->
+    <div class="container">
+        <div class="content">
+            <div class="title">
+                <h1>τ Calculator</h1>
+            </div>
+            <div class="form">
+                <div class="input">
+                    <label for="timeConstant">Time Constant</label>
+                    <input type="text" id="timeConstant" name="timeConstant" placeholder="Time Constant" value="1">
+                </div>
+                <div class="input">
+                    <label for="units">Units</label>
+                    <select name="units" id="units">
+                        <option value="s">Seconds</option>
+                        <option value="ms">Miliseconds</option>
+                        <option value="us">Microseconds</option>
+                        <option value="ns">Nanoseconds</option>
+                    </select>
+                </div>
+                <div class="input">
+                    <label for="tolerance">Tolerance - Percent</label>
+                    <input type="text" id="tolerance" name="tolerance" placeholder="Tolerance - Percent" value="10">
+                </div>
+                <div class="input">
+                    <label for="resistorDecade">Resistor Decade</label>
+                    <select name="resistorDecade" id="resistorDecade">
+                        <option value="100R">100R</option>
+                        <option value="1kR" selected="selected">1kR</option>
+                        <option value="10kR">10kR</option>
+                        <option value="100kR">100kR</option>
+                        <option value="1MR">1MR</option>
+                    </select>
+                </div>
+                <div class="input">
+                    <label for="capacitorDecade">Capacitor Decade</label>
+                    <select name="capacitorDecade" id="capacitorDecade">
+                        <option value="1mF">1mF</option>
+                        <option value="1μF">1μF</option>
+                        <option value="1nF">1nF</option>
+                        <option value="1pF">1pF</option>
+                    </select>
+                </div>
+                <div class="input">
+                    <label for="series">Series</label>
+                    <select name="series" id="series">
+                        <option value="e3">E3</option>
+                        <option value="e6">E6</option>
+                        <option value="e12">E12</option>
+                        <option value="e24">E24</option>
+                        <option value="e48">E48</option>
+                        <option value="e96">E96</option>
+                        <option value="e192">E192</option>
+                    </select>
+                </div>
+                <div class="output">
+                    <label for="resistance">Resistance</label>
+                    <input type="text" id="resistance" name="resistance" placeholder="Resistance" readonly>
+                </div>
+                <div class="output">
+                    <label for="capacitance">Capacitance</label>
+                    <input type="text" id="capacitance" name="capacitance" placeholder="Capacitance" readonly>
+                </div>
+                <div class="output">
+                    <label for="error">Percent Error</label>
+                    <input type="text" id="error" name="error" placeholder="Error" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

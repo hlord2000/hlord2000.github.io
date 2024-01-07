@@ -1,0 +1,62 @@
+* {
+    font-family: 'Source Code Pro', monospace;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"] {
+    border: 2px solid #4CAF50; /* Change the color as needed */
+    border-radius: 10px; /* Adjust the radius for more or less rounding */
+    padding: 10px;
+    outline: none; /* Removes the default focus outline */
+    background-color: #222222;
+    color: #3bf9d0; /* Neon green color for other text elements */
+}
+
+input[type="text"]:focus {
+    border-color: #3e8e41; /* Different color when the input is focused */
+}
+
+select {
+    border: 2px solid #4CAF50; /* Change the color as needed */
+    border-radius: 10px; /* Adjust the radius for more or less rounding */
+    padding: 10px;
+    outline: none; /* Removes the default focus outline */
+    background-color: #222222;
+}
+
+select:focus {
+    border-color: #3e8e41; /* Different color when the select is focused */
+}
+
+select option {
+    appearance: none;
+    /* safari */
+    -webkit-appearance: none;
+    /* other styles for aesthetics */
+    width: 100%;
+    font-size: 1.15rem;
+    padding: 0.675em 6em 0.675em 1em;
+    background-color: #222222;
+    border: 1px solid #caced1;
+    border-radius: 10px;
+    color: #000;
+    cursor: pointer;
+}
+
+body {
+    background-color: #222222;
+}
+
+h1 {
+    color: #39ff14; /* Neon blue color for h1 */
+    /* Add any other h1 specific styles here */
+}
+
+p, label, select, option {
+    color: #3bf9d0; /* Neon green color for other text elements */
+    /* Add any other styles for these elements here */
+}

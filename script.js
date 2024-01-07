@@ -104,10 +104,10 @@ function timeConstant(tau, tau_units, tolerance, r_decade, c_decade, component_s
                 let tau_tmp = r * c;
                 if (tau_tmp >= tau_min && tau_tmp <= tau_max) {
                     if (r_decade_val >= 1000 && r_decade_val < 1000000) {
-                        results.push([(r/1000).toFixed(2) + r_suffixes[r_decade], (c/c_decade_val).toFixed(2) + c_decade.slice(1,3), Math.abs((tau_tmp-tau_scaled)/tau_scaled)]);
+                        results.push([(r/1000).toFixed(2) + r_suffixes[r_decade], (c/c_decade_val).toFixed(2) + c_decade.slice(1,3), 100*Math.abs((tau_tmp-tau_scaled)/tau_scaled)]);
                     }
                     else {
-                        results.push([(r/r_decade_val).toFixed(2) + r_suffixes[r_decade], (c/c_decade_val).toFixed(2) + c_decade.slice(1,3), Math.abs((tau_tmp-tau_scaled)/tau_scaled)]);
+                        results.push([(r/r_decade_val).toFixed(2) + r_suffixes[r_decade], (c/c_decade_val).toFixed(2) + c_decade.slice(1,3), 100*Math.abs((tau_tmp-tau_scaled)/tau_scaled)]);
                     }
                 }
             }

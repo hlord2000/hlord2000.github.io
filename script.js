@@ -23,6 +23,28 @@ let time_units = new Map([
     ["ns", 0.000000001],
 ]);
 
+let time_unit_map = new Map([
+    ["seconds", "s"],
+    ["second", "s"],
+    ["secs", "s"],
+    ["sec", "s"],
+    ["s", "s"],
+    ["milliseconds", "ms"],
+    ["millisecond", "ms"],
+    ["mseconds", "ms"],
+    ["msecond", "ms"],
+    ["msecs", "ms"],
+    ["msec", "ms"],
+    ["ms", "ms"],
+    ["microseconds", "us"],
+    ["microsecond", "us"],
+    ["useconds", "us"],
+    ["usecond", "us"],
+    ["usecs", "us"],
+    ["usec", "us"],
+    ["us", "us"],
+]);
+
 let resistor_decade = new Map([
     ["100R", 100],
     ["1kR", 1000],
@@ -39,7 +61,7 @@ let capacitor_decade = new Map([
 ]);
 
 let rc_args = {
-    "timeConstant": 1,
+    "timeConstant": "1 sec",
     "units": "s",
     "tolerance": 10,
     "resistorDecade": "1kR",
@@ -67,9 +89,6 @@ function timeConstant(tau, tau_units, tolerance, r_decade, c_decade, component_s
 
     let tau_min = tau_scaled * (1 - (tolerance / 100));
     let tau_max = tau_scaled * (1 + (tolerance / 100));
-
-    console.log("tau_min: " + tau_min);
-    console.log("tau_max: " + tau_max);
 
     let r_series = series.get(component_series);
     let c_series = series.get(component_series);
@@ -99,16 +118,23 @@ function timeConstant(tau, tau_units, tolerance, r_decade, c_decade, component_s
 
 let inputElements = ["timeConstant", "tolerance"];
 
-let changeElements = ["units", "resistorDecade", "capacitorDecade", "series"];
-
+let changeElements = ["resistorDecade", "capacitorDecade", "series"];
 
 inputElements.forEach(function(elementId) {
     document.getElementById(elementId).addEventListener("input", function() {
-        rc_args[elementId] = document.getElementById(elementId).value;
+        if (elementId == "timeConstant") {
+            let results = parseTimeUnits(document.getElementById(elementId).value);
+            if (results) {
+                rc_args[elementId] = results[0];
+                rc_args["units"] = time_unit_map.get(results[1]);
+                console.log("Time constant: " + rc_args[elementId] + " " + rc_args["units"]);
+            }
+        }
+        else {
+            rc_args[elementId] = document.getElementById(elementId).value;
+        }
         updateResults();
     });
-
-
 });
 
 changeElements.forEach(function(elementId) {
@@ -145,6 +171,23 @@ function updateResults() {
         document.getElementById("capacitance").value = results[0][1];
         document.getElementById("error").value = results[0][2].toFixed(2);
     }
+};
+
+function parseTimeUnits(timeUnits) {
+    const re_seconds = /^(\d+(\.\d+)?)\s?(seconds|second|secs|sec|s)$/;
+    const re_milliseconds = /^(\d+(\.\d+)?)\s?(milliseconds|millisecond|mseconds|msecond|msecs|msec|ms)$/;
+    const re_microseconds = /^(\d+(\.\d+)?)\s?(microseconds|microsecond|useconds|usecond|usecs|usec|us)$/;
+    const re_expressions = [re_seconds, re_milliseconds, re_microseconds];
+
+    for (let x of re_expressions) {
+        if (x.test(timeUnits)) {
+            const match = timeUnits.match(x);
+            if (match) {
+                return [parseFloat(match[1]), match[3]]; // Return the number and the unit
+            }
+        }
+    }
+    return null;
 };
 
 window.onload = updateResults;

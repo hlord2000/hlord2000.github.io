@@ -42,6 +42,7 @@
             --disabled-color: #f1f1f1;
             --text-color: #333333;
             --light-text: #666666;
+            --system-color: #8e44ad; /* Purple color for system/required components */
         }
 
         * {
@@ -94,7 +95,7 @@
 
         .chip-display {
             flex: 1;
-            min-width: 500px;
+            min-width: 600px;
             border: 1px solid var(--border-color);
             border-radius: 5px;
             padding: 15px;
@@ -116,6 +117,14 @@
             border: 1px solid var(--border-color);
             border-radius: 5px;
             background-color: #f9f9f9;
+        }
+        
+        .required-peripherals {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid var(--system-color);
+            border-radius: 5px;
+            background-color: #f8f0ff;
         }
         
         .checkbox-group {
@@ -146,6 +155,11 @@
             margin-left: 24px;
             font-size: 0.9em;
             color: var(--light-text);
+        }
+        
+        .system-peripheral {
+            font-weight: 600;
+            color: var(--system-color);
         }
 
         .peripheral-group {
@@ -223,19 +237,32 @@
             color: white;
         }
 
+        .pin.system {
+            background-color: var(--system-color);
+            color: white;
+        }
+
         .pin.vdd, .pin.vss, .pin.debug {
             background-color: #999999;
             color: white;
         }
 
         .pin-details {
-            margin-top: 20px;
+			align: center;
+            margin: 20px;
             padding: 10px;
             border: 1px solid var(--border-color);
             border-radius: 5px;
             min-height: 100px;
             background-color: #f9f9f9;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 100px; /* Set a minimum height if needed */
         }
+
+		#pinDetails p {
+		}
 
         .selected-list {
             list-style-type: none;
@@ -251,6 +278,11 @@
             justify-content: space-between;
             align-items: center;
         }
+        
+        .selected-item.system {
+            background-color: #f8f0ff;
+            border-left: 3px solid var(--system-color);
+        }
 
         .remove-btn {
             background-color: var(--error-color);
@@ -263,6 +295,12 @@
 
         .remove-btn:hover {
             opacity: 0.9;
+        }
+        
+        .remove-btn.disabled {
+            background-color: var(--disabled-color);
+            color: var(--light-text);
+            cursor: not-allowed;
         }
 
         .legend {
@@ -495,8 +533,9 @@
                 <h2>Available Peripherals</h2>
                 <input type="text" id="searchPeripherals" class="search-box" placeholder="Search peripherals...">
                 
+                <!-- Optional Simple Peripherals Section -->
                 <div class="simple-peripherals">
-                    <h3>Simple Peripherals</h3>
+                    <h3>Pin Specific Peripherals</h3>
                     <div class="checkbox-group">
                         <label class="checkbox-label">
                             <input type="checkbox" id="xl1xl2-checkbox"> 
@@ -510,13 +549,6 @@
                             <span>NFC Antenna (NFC1/NFC2)</span>
                         </label>
                         <div class="checkbox-description">Uses P1.02 and P1.03 for NFC antenna</div>
-                    </div>
-                    <div class="checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="hfxtal-checkbox" checked disabled> 
-                            <span>High Frequency Crystal (XC1/XC2)</span>
-                        </label>
-                        <div class="checkbox-description">Uses XC1 and XC2 pins for 32 MHz crystal (Required)</div>
                     </div>
                 </div>
                 
@@ -584,12 +616,16 @@
                         <span>Required</span>
                     </div>
                     <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--system-color);"></div>
+                        <span>System</span>
+                    </div>
+                    <div class="legend-item">
                         <div class="legend-color" style="background-color: #999999;"></div>
                         <span>Power/Debug</span>
                     </div>
                 </div>
                 <div class="pin-details" id="pinDetails">
-                    <p>Click on a pin to see details...</p>
+                    <p>Click a pin to see details...</p>
                 </div>
             </div>
 
@@ -818,17 +854,43 @@
             // Simple peripherals checkboxes
             document.getElementById('xl1xl2-checkbox').addEventListener('change', toggleXL1XL2);
             document.getElementById('nfc-checkbox').addEventListener('change', toggleNFC);
-            document.getElementById('hfxtal-checkbox').addEventListener('change', toggleHFXTAL);
             
             // Modal event listeners
             document.querySelector('.close').addEventListener('click', closePinSelectionModal);
             document.getElementById('cancelPinSelection').addEventListener('click', closePinSelectionModal);
             document.getElementById('confirmPinSelection').addEventListener('click', confirmPinSelection);
             
+            // Set HF Crystal pins as system requirement (always on)
+            setHFXtalAsSystemRequirement();
+            
             // Log that initialization is complete
             console.log("Initialization complete. Peripherals loaded:", 
                 Object.keys(peripherals).map(cat => `${cat}: ${peripherals[cat].length}`));
         });
+        
+        // Set HF Crystal (XC1/XC2) as system requirement that's always enabled
+        function setHFXtalAsSystemRequirement() {
+            const pins = ["XC1", "XC2"];
+            
+            // Assign pins
+            usedPins[pins[0]] = {
+                peripheral: "32 MHz Crystal",
+                function: "XC1",
+                required: true,
+                isSystem: true
+            };
+            
+            usedPins[pins[1]] = {
+                peripheral: "32 MHz Crystal",
+                function: "XC2",
+                required: true,
+                isSystem: true
+            };
+            
+            // Update UI
+            updateSelectedPeripheralsList();
+            updatePinDisplay();
+        }
         
         // Toggle XL1/XL2 pins
         function toggleXL1XL2(event) {
@@ -940,61 +1002,6 @@
             updatePinDisplay();
         }
         
-        // Toggle high-frequency crystal pins
-        function toggleHFXTAL(event) {
-            const pins = ["XC1", "XC2"];
-            const checked = event.target.checked;
-            
-            if (checked) {
-                // Check if pins are already in use
-                if (pins.some(pin => usedPins[pin])) {
-                    alert("One or both HF crystal pins (XC1, XC2) are already in use.");
-                    event.target.checked = false;
-                    return;
-                }
-                
-                // Assign pins
-                usedPins[pins[0]] = {
-                    peripheral: "32 MHz Crystal",
-                    function: "XC1",
-                    required: true
-                };
-                usedPins[pins[1]] = {
-                    peripheral: "32 MHz Crystal",
-                    function: "XC2",
-                    required: true
-                };
-                
-                // Add to selected peripherals
-                selectedPeripherals.push({
-                    id: "32 MHz Crystal",
-                    category: "Simple",
-                    peripheral: { id: "32 MHz Crystal", port: "System", pins: "XC1 && XC2", notes: "Required for high-frequency operation" },
-                    pinFunctions: {
-                        "XC1": "XC1",
-                        "XC2": "XC2"
-                    }
-                });
-            } else {
-                // Remove from selected peripherals
-                const index = selectedPeripherals.findIndex(p => p.id === "32 MHz Crystal");
-                if (index !== -1) {
-                    selectedPeripherals.splice(index, 1);
-                }
-                
-                // Remove pin assignments
-                pins.forEach(pin => {
-                    if (usedPins[pin] && usedPins[pin].peripheral === "32 MHz Crystal") {
-                        delete usedPins[pin];
-                    }
-                });
-            }
-            
-            // Update UI
-            updateSelectedPeripheralsList();
-            updatePinDisplay();
-        }
-        
         // Populate peripheral lists in each tab
         function populatePeripheralLists() {
             for (const category in peripherals) {
@@ -1053,7 +1060,7 @@
             const chipSize = 420;
             const pinSize = 20;
             const pinSpacing = (400 - 2 * pinSize) / 11; // 12 pins per side
-            const offset = 10; // offset from edge for chip body
+            const offset = 20; // offset from edge for chip body
             
             // Create all 48 pins
             for (let i = 1; i <= 48; i++) {
@@ -1071,16 +1078,21 @@
                     pin.classList.add('clock');
                 }
                 
+                // Special handling for XC1/XC2 crystal pins
+                if (pinData.name === "XC1" || pinData.name === "XC2") {
+                    pin.classList.add('system');
+                }
+                
                 // Position the pin based on its number
                 if (i <= 12) {
                     // Left side pins (1-12)
                     pin.style.left = '0px';
-                    pin.style.top = (offset + pinSize + (i-1) * pinSpacing) + 'px';
+                    pin.style.top = (pinSize + (i-1) * pinSpacing) + 'px';
                     pin.style.transform = 'translateX(-50%)';
                 } else if (i <= 24) {
                     // Bottom side pins (13-24)
                     pin.style.bottom = '0px';
-                    pin.style.left = (offset + pinSize + (i-13) * pinSpacing) + 'px';
+                    pin.style.left = (pinSize + (i-13) * pinSpacing) + 'px';
                     pin.style.transform = 'translateY(50%)';
                 } else if (i <= 36) {
                     // Right side pins (25-36)
@@ -1101,9 +1113,6 @@
                 
                 chipContainer.appendChild(pin);
             }
-            
-            // Automatically select HF crystal as it's required
-            toggleHFXTAL({ target: { checked: true } });
         }
         
         // Get pin data by pin number
@@ -1122,7 +1131,9 @@
             
             let usedBy = '';
             if (usedPins[pin.name]) {
-                usedBy = `<p><strong>Used by:</strong> ${usedPins[pin.name].peripheral} (${usedPins[pin.name].function})</p>`;
+                const usage = usedPins[pin.name];
+                const systemBadge = usage.isSystem ? '<span class="system-peripheral">[System]</span> ' : '';
+                usedBy = `<p><strong>Used by:</strong> ${systemBadge}${usage.peripheral} (${usage.function})</p>`;
             }
             
             let functionsHtml = '';
@@ -1442,10 +1453,6 @@
             // NFC
             document.getElementById('nfc-checkbox').checked = 
                 selectedPeripherals.some(p => p.id === "NFC Antenna");
-            
-            // HF Crystal
-            document.getElementById('hfxtal-checkbox').checked = 
-                selectedPeripherals.some(p => p.id === "32 MHz Crystal");
         }
         
         // Check if a function is required for a peripheral category
@@ -1491,14 +1498,33 @@
                 const pinName = pin.dataset.name;
                 
                 // Reset classes
-                pin.classList.remove('used', 'required');
+                pin.classList.remove('used', 'required', 'system');
+                
+                // Re-add clock class if needed
+                const pinInfo = getPinDataByName(pinName);
+                if (pinInfo && pinInfo.isClock) {
+                    pin.classList.add('clock');
+                }
+                
+                // Special handling for system pins (XC1/XC2)
+                if (pinName === "XC1" || pinName === "XC2") {
+                    pin.classList.add('system');
+                }
                 
                 // Add appropriate classes based on pin usage
                 if (usedPins[pinName]) {
                     pin.classList.add('used');
-                    if (usedPins[pinName].required) {
+                    
+                    if (usedPins[pinName].isSystem) {
+                        pin.classList.add('system');
+                    } else if (usedPins[pinName].required) {
                         pin.classList.add('required');
                     }
+                }
+                
+                // Special styling for system pins (even if not marked as used yet)
+                if (["XC1", "XC2"].includes(pinName)) {
+                    pin.classList.add('system');
                 }
             });
         }
@@ -1510,13 +1536,38 @@
             // Clear the list
             selectedList.innerHTML = '';
             
-            if (selectedPeripherals.length === 0) {
+            // First add system peripherals
+            const systemPeripherals = selectedPeripherals.filter(p => p.isSystem || p.category === "System");
+            const userPeripherals = selectedPeripherals.filter(p => !p.isSystem && p.category !== "System");
+            
+            if (systemPeripherals.length === 0 && userPeripherals.length === 0) {
                 selectedList.innerHTML = '<li class="empty-message">No peripherals selected yet.</li>';
                 return;
             }
             
-            // Add each selected peripheral to the list
-            selectedPeripherals.forEach(item => {
+            // Add system peripherals first
+            systemPeripherals.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.className = 'selected-item system';
+                
+                const peripheral = item.peripheral;
+                const usedPinsList = Object.entries(item.pinFunctions)
+                    .map(([pinName, funcName]) => `${pinName} (${funcName})`)
+                    .join(', ');
+                
+                listItem.innerHTML = `
+                    <div>
+                        <strong>💻 ${peripheral.id}</strong>
+                        <div>Pins: ${usedPinsList || 'None assigned'}</div>
+                    </div>
+                    <button class="remove-btn disabled" disabled data-id="${peripheral.id}">System</button>
+                `;
+                
+                selectedList.appendChild(listItem);
+            });
+            
+            // Add user-selected peripherals
+            userPeripherals.forEach(item => {
                 const listItem = document.createElement('li');
                 listItem.className = 'selected-item';
                 
@@ -1537,7 +1588,7 @@
             });
             
             // Add event listeners to remove buttons
-            document.querySelectorAll('.remove-btn').forEach(button => {
+            document.querySelectorAll('.remove-btn:not(.disabled)').forEach(button => {
                 button.addEventListener('click', function() {
                     const peripheralId = this.dataset.id;
                     removePeripheral(peripheralId);
@@ -1551,8 +1602,17 @@
             const index = selectedPeripherals.findIndex(p => p.id === peripheralId);
             if (index === -1) return;
             
+            // Get the peripheral
+            const peripheral = selectedPeripherals[index];
+            
+            // Cannot remove system peripherals
+            if (peripheral.isSystem || peripheral.category === "System") {
+                alert("System peripherals cannot be removed.");
+                return;
+            }
+            
             // Get the pin functions to remove
-            const pinFunctions = selectedPeripherals[index].pinFunctions;
+            const pinFunctions = peripheral.pinFunctions;
             
             // Remove it from the selected list
             selectedPeripherals.splice(index, 1);
@@ -1575,8 +1635,18 @@
         
         // Clear all selected peripherals
         function clearAllPeripherals() {
-            selectedPeripherals = [];
-            usedPins = {};
+            // Keep system peripherals, remove all others
+            const systemPeripherals = selectedPeripherals.filter(p => p.isSystem || p.category === "System");
+            selectedPeripherals = [...systemPeripherals];
+            
+            // Clear all non-system pins
+            const newUsedPins = {};
+            for (const [pinName, pinData] of Object.entries(usedPins)) {
+                if (pinData.isSystem) {
+                    newUsedPins[pinName] = pinData;
+                }
+            }
+            usedPins = newUsedPins;
             
             // Update the UI
             updateSelectedPeripheralsList();
@@ -1590,7 +1660,6 @@
             // Reset all checkboxes
             document.getElementById('xl1xl2-checkbox').checked = false;
             document.getElementById('nfc-checkbox').checked = false;
-            document.getElementById('hfxtal-checkbox').checked = false;
         }
         
         // Export the current configuration
@@ -1607,6 +1676,7 @@
                     return {
                         id: peripheral.id,
                         category: item.category,
+                        isSystem: item.isSystem || false,
                         address: peripheral.address,
                         pins: pins
                     };
@@ -1615,7 +1685,8 @@
                     pin: pinName,
                     peripheral: data.peripheral,
                     function: data.function,
-                    required: data.required
+                    required: data.required,
+                    isSystem: data.isSystem || false
                 }))
             };
             

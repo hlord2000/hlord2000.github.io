@@ -899,6 +899,54 @@
         let tempSelectedPins = {}; // Used for storing pin selections temporarily during modal dialog
         let currentPackage = "QFN-48"; // Default package
         
+        // Helper function to get peripheral functions based on category and peripheral
+        function getPeripheralFunctions(category, peripheral) {
+            // For most peripherals, we can use the base name to look up functions
+            let baseName = peripheral.id.replace(/\d+$/, '');
+            
+            // Special cases for peripherals with different naming patterns
+            if (baseName.includes('SPIM/SPIS')) {
+                baseName = 'SPI';
+            } else if (baseName.includes('TWIM/TWIS')) {
+                baseName = 'I2C';
+            } else if (baseName.includes('UARTE')) {
+                baseName = 'UART';
+            } else if (baseName.includes('PDM')) {
+                baseName = 'PDM';
+            } else if (baseName.includes('PWM')) {
+                baseName = 'PWM';
+            } else if (baseName.includes('I2S')) {
+                baseName = 'I2S';
+            } else if (baseName.includes('QDEC')) {
+                baseName = 'QDEC';
+            } else if (baseName.includes('NFCT')) {
+                baseName = 'NFCT';
+            }
+            
+            // Return the functions for this peripheral type
+            return peripheralFunctions[baseName] || [];
+        }
+        
+        // Helper function to check if a function is required
+        function isRequiredFunction(category, functionName) {
+            // Get the base category name
+            let baseName = category;
+            if (category.includes('SPI')) {
+                baseName = 'SPI';
+            } else if (category.includes('I2C') || category.includes('TWIM')) {
+                baseName = 'I2C';
+            } else if (category.includes('UART')) {
+                baseName = 'UART';
+            }
+            
+            // Look up the function in the peripheralFunctions
+            const functions = peripheralFunctions[baseName] || [];
+            const func = functions.find(f => f.name === functionName);
+            
+            // Return whether the function is required
+            return func ? !!func.required : false;
+        }
+        
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
             console.log("Initializing NRF Pin Planner...");
@@ -1189,6 +1237,77 @@
             // Update UI
             updateSelectedPeripheralsList();
             updatePinDisplay();
+        }
+        
+        // Clear all peripherals
+        function clearAllPeripherals() {
+            // Confirm with the user
+            if (!confirm('Are you sure you want to clear all peripherals? This action cannot be undone.')) {
+                return;
+            }
+            
+            // Clear all selected peripherals except system ones
+            selectedPeripherals = selectedPeripherals.filter(p => {
+                const isSystem = Object.values(p.pinFunctions).some(func => {
+                    const pin = Object.keys(p.pinFunctions).find(pin => p.pinFunctions[pin] === func);
+                    return usedPins[pin] && usedPins[pin].isSystem;
+                });
+                return isSystem;
+            });
+            
+            // Clear all used pins except system ones
+            for (const pin in usedPins) {
+                if (!usedPins[pin].isSystem) {
+                    delete usedPins[pin];
+                }
+            }
+            
+            // Reset checkboxes
+            document.getElementById('xl1xl2-checkbox').checked = false;
+            document.getElementById('nfc-checkbox').checked = false;
+            
+            // Update UI
+            updateSelectedPeripheralsList();
+            updatePinDisplay();
+        }
+        
+        // Export configuration
+        function exportConfiguration() {
+            // Create a configuration object
+            const config = {
+                package: currentPackage,
+                peripherals: selectedPeripherals.map(p => ({
+                    id: p.id,
+                    category: p.category,
+                    pinAssignments: p.pinFunctions
+                })),
+                pinAssignments: Object.keys(usedPins).map(pin => ({
+                    pin: pin,
+                    peripheral: usedPins[pin].peripheral,
+                    function: usedPins[pin].function,
+                    required: usedPins[pin].required,
+                    isSystem: usedPins[pin].isSystem || false
+                }))
+            };
+            
+            // Convert to JSON
+            const jsonConfig = JSON.stringify(config, null, 2);
+            
+            // Create a blob and download link
+            const blob = new Blob([jsonConfig], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `nrf-pin-config-${currentPackage.toLowerCase()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
         }
         
         // Toggle NFC pins
@@ -1551,6 +1670,105 @@
             
             // Show the modal
             document.getElementById('pinSelectionModal').style.display = 'block';
+        }
+        
+        // Confirm pin selection
+        function confirmPinSelection() {
+            // Check if all required functions have pins assigned
+            if (currentPeripheral && currentCategory) {
+                const functions = getPeripheralFunctions(currentCategory, currentPeripheral);
+                const requiredFunctions = functions.filter(f => f.required);
+                
+                // For GPIOTE, there are no required functions
+                if (currentPeripheral.id.includes('GPIOTE')) {
+                    // Just check if at least one pin is selected
+                    if (Object.keys(tempSelectedPins).length === 0) {
+                        alert('Please select at least one pin for the GPIOTE peripheral.');
+                        return;
+                    }
+                } 
+                // For TAMPC, no specific requirements
+                else if (currentPeripheral.id === 'TAMPC') {
+                    // Just check if at least one shield pair is selected
+                    if (Object.keys(tempSelectedPins).length === 0) {
+                        alert('Please select at least one shield pair for the TAMPC peripheral.');
+                        return;
+                    }
+                }
+                // For SAADC, no specific requirements
+                else if (currentPeripheral.id === 'SAADC') {
+                    // Just check if at least one analog input is selected
+                    if (Object.keys(tempSelectedPins).length === 0) {
+                        alert('Please select at least one analog input for the SAADC peripheral.');
+                        return;
+                    }
+                }
+                // For other peripherals, check required functions
+                else {
+                    for (const func of requiredFunctions) {
+                        // Check if this function has a pin assigned
+                        const hasPin = Object.values(tempSelectedPins).includes(func.name);
+                        if (!hasPin) {
+                            alert(`Please select a pin for the required function: ${func.name}`);
+                            return;
+                        }
+                    }
+                }
+                
+                // Check for pin conflicts with other peripherals
+                const conflictingPins = [];
+                for (const pinName of Object.keys(tempSelectedPins)) {
+                    if (usedPins[pinName] && 
+                        (!currentPeripheral || usedPins[pinName].peripheral !== currentPeripheral.id)) {
+                        conflictingPins.push(`${pinName} (used by ${usedPins[pinName].peripheral})`);
+                    }
+                }
+                
+                if (conflictingPins.length > 0) {
+                    alert(`Cannot assign pins due to conflicts:\n${conflictingPins.join('\n')}`);
+                    return;
+                }
+                
+                // All checks passed, add the peripheral
+                const peripheralConfig = {
+                    id: currentPeripheral.id,
+                    category: currentCategory,
+                    peripheral: currentPeripheral,
+                    pinFunctions: { ...tempSelectedPins }
+                };
+                
+                // Check if this peripheral is already in the list (for editing)
+                const existingIndex = selectedPeripherals.findIndex(p => p.id === currentPeripheral.id);
+                if (existingIndex !== -1) {
+                    // Remove old pin assignments
+                    const oldPinFunctions = selectedPeripherals[existingIndex].pinFunctions;
+                    for (const pinName in oldPinFunctions) {
+                        delete usedPins[pinName];
+                    }
+                    
+                    // Update the peripheral
+                    selectedPeripherals[existingIndex] = peripheralConfig;
+                } else {
+                    // Add new peripheral
+                    selectedPeripherals.push(peripheralConfig);
+                }
+                
+                // Assign the selected pins
+                for (const [pinName, funcName] of Object.entries(tempSelectedPins)) {
+                    usedPins[pinName] = {
+                        peripheral: currentPeripheral.id,
+                        function: funcName,
+                        required: isRequiredFunction(currentCategory, funcName)
+                    };
+                }
+                
+                // Update the UI
+                updateSelectedPeripheralsList();
+                updatePinDisplay();
+                
+                // Close the modal
+                closePinSelectionModal();
+            }
         }
         
         // Close the pin selection modal
@@ -2029,8 +2247,117 @@
                         select.value = currentValue;
                     }
                 }
-			})
-		}
+            });
+        }
+        
+        // Update the selected peripherals list
+        function updateSelectedPeripheralsList() {
+            const selectedList = document.getElementById('selectedList');
+            selectedList.innerHTML = '';
+            
+            if (selectedPeripherals.length === 0) {
+                const emptyMessage = document.createElement('li');
+                emptyMessage.className = 'empty-message';
+                emptyMessage.textContent = 'No peripherals selected yet.';
+                selectedList.appendChild(emptyMessage);
+                return;
+            }
+            
+            // Add each peripheral to the list
+            selectedPeripherals.forEach(peripheral => {
+                const item = document.createElement('li');
+                item.className = 'selected-item';
+                
+                // Check if this is a system peripheral
+                const isSystem = Object.values(peripheral.pinFunctions).some(func => {
+                    const pin = Object.keys(peripheral.pinFunctions).find(pin => peripheral.pinFunctions[pin] === func);
+                    return usedPins[pin] && usedPins[pin].isSystem;
+                });
+                
+                if (isSystem) {
+                    item.classList.add('system');
+                }
+                
+                // Create the item content
+                const pinList = Object.entries(peripheral.pinFunctions)
+                    .map(([pin, func]) => `${pin}: ${func}`)
+                    .join(', ');
+                
+                item.innerHTML = `
+                    <div>
+                        <strong>${peripheral.id}</strong>
+                        <div>${pinList}</div>
+                    </div>
+                    <button class="remove-btn ${isSystem ? 'disabled' : ''}" 
+                            data-id="${peripheral.id}" 
+                            ${isSystem ? 'disabled' : ''}>
+                        Remove
+                    </button>
+                `;
+                
+                // Add event listener to the remove button
+                const removeBtn = item.querySelector('.remove-btn');
+                if (!isSystem) {
+                    removeBtn.addEventListener('click', function() {
+                        removePeripheral(peripheral.id);
+                    });
+                }
+                
+                selectedList.appendChild(item);
+            });
+        }
+        
+        // Remove a peripheral
+        function removePeripheral(peripheralId) {
+            // Find the peripheral
+            const index = selectedPeripherals.findIndex(p => p.id === peripheralId);
+            if (index === -1) return;
+            
+            const peripheral = selectedPeripherals[index];
+            
+            // Remove pin assignments
+            for (const pinName in peripheral.pinFunctions) {
+                delete usedPins[pinName];
+            }
+            
+            // Remove from selected peripherals
+            selectedPeripherals.splice(index, 1);
+            
+            // Update UI
+            updateSelectedPeripheralsList();
+            updatePinDisplay();
+            
+            // Update checkboxes for special peripherals
+            if (peripheralId === "32.768 kHz Crystal") {
+                document.getElementById('xl1xl2-checkbox').checked = false;
+            } else if (peripheralId === "NFC Antenna") {
+                document.getElementById('nfc-checkbox').checked = false;
+            }
+        }
+        
+        // Update the pin display
+        function updatePinDisplay() {
+            // Update all pins
+            document.querySelectorAll('.pin').forEach(pinElement => {
+                const pinName = pinElement.dataset.name;
+                
+                // Reset classes
+                pinElement.classList.remove('used', 'required', 'system');
+                
+                // Add appropriate classes based on pin usage
+                if (usedPins[pinName]) {
+                    pinElement.classList.add('used');
+                    
+                    if (usedPins[pinName].required) {
+                        pinElement.classList.add('required');
+                    }
+                    
+                    if (usedPins[pinName].isSystem) {
+                        pinElement.classList.add('system');
+                    }
+                }
+            });
+        }
 		</script>
 	</body>
 </html>

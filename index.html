@@ -1962,12 +1962,14 @@
                         if (selectedPin) {
                             tempSelectedPins[selectedPin] = functionName;
                         }
+                        
+                        // Update all GPIOTE dropdowns to reflect the new selection
+                        updateGpioteDropdowns(gpioteFunctions, filteredPorts);
                     });
                     
                     selectionCell.appendChild(select);
                     
-                    // Populate the select with compatible pins
-                    populatePinSelectOptions(select, func, filteredPorts);
+                    // We'll populate all GPIOTE dropdowns at once after all are created
                     
                     const notesCell = document.createElement('td');
                     notesCell.textContent = `Channel ${func.channel} - can be assigned to one pin`;
@@ -1979,6 +1981,9 @@
                     
                     tableBody.appendChild(row);
                 });
+                
+                // Populate all GPIOTE dropdowns at once
+                updateGpioteDropdowns(gpioteFunctions, filteredPorts);
                 
                 return; // Skip the standard function handling
             }
@@ -2241,6 +2246,61 @@
                     // Clear and repopulate options
                     select.innerHTML = '<option value="">-- Select Pin --</option>';
                     populatePinSelectOptions(select, func, ports);
+                    
+                    // Restore the selection if it's still valid
+                    if (currentValue && (select.querySelector(`option[value="${currentValue}"]`))) {
+                        select.value = currentValue;
+                    }
+                }
+            });
+        }
+        
+        // Update GPIOTE pin dropdowns to filter out pins already selected in the same peripheral
+        function updateGpioteDropdowns(functions, ports) {
+            functions.forEach(func => {
+                const selectId = `select-gpiote-pin-${func.channel}`;
+                const select = document.getElementById(selectId);
+                
+                if (select) {
+                    // Save the current selection
+                    const currentValue = select.value;
+                    
+                    // Clear and repopulate options
+                    select.innerHTML = '<option value="">-- Select Pin --</option>';
+                    
+                    // Get all available pins that match the requirements
+                    const availablePins = pinData.filter(pin => {
+                        // Must be an I/O pin
+                        if (pin.type !== 'io') return false;
+                        
+                        // Must be in an allowed port
+                        if (!ports.includes(pin.port)) return false;
+                        
+                        // Pin must not be already used by another peripheral
+                        if (usedPins[pin.name]) return false;
+                        
+                        // Pin must not be temporarily selected for another GPIOTE function in the current dialog
+                        const isAlreadySelectedForGpiote = Object.entries(tempSelectedPins).some(([pinName, funcName]) => {
+                            return pinName === pin.name && funcName !== func.name && funcName.includes('GPIOTE PIN');
+                        });
+                        
+                        if (isAlreadySelectedForGpiote) return false;
+                        
+                        return true;
+                    });
+                    
+                    // Add options for each available pin
+                    availablePins.forEach(pin => {
+                        const option = new Option(`${pin.name} (Pin ${pin.number})${pin.isClock ? ' - Clock' : ''}`, pin.name);
+                        select.add(option);
+                    });
+                    
+                    // If no pins are available, add a disabled option
+                    if (availablePins.length === 0) {
+                        const option = new Option('No compatible pins available', '');
+                        option.disabled = true;
+                        select.add(option);
+                    }
                     
                     // Restore the selection if it's still valid
                     if (currentValue && (select.querySelector(`option[value="${currentValue}"]`))) {

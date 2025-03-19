@@ -2358,6 +2358,89 @@
                 }
             });
         }
+        
+        // Filter peripherals based on search input
+        function filterPeripherals() {
+            const searchText = document.getElementById('searchPeripherals').value.toLowerCase();
+            
+            // Filter single-instance peripherals
+            const singlePeripheralButtons = document.querySelectorAll('#single-peripherals-container .single-peripheral-btn');
+            singlePeripheralButtons.forEach(button => {
+                const peripheralText = button.textContent.toLowerCase();
+                if (peripheralText.includes(searchText)) {
+                    button.style.display = 'block';
+                } else {
+                    button.style.display = 'none';
+                }
+            });
+            
+            // Filter multi-instance peripherals in accordion
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                const content = item.querySelector('.accordion-content');
+                const headerText = header.textContent.toLowerCase();
+                
+                // Check if header matches
+                const headerMatches = headerText.includes(searchText);
+                
+                // Check if any peripheral items in this category match
+                const peripheralItems = item.querySelectorAll('.peripheral-item');
+                let anyItemMatches = false;
+                
+                peripheralItems.forEach(pItem => {
+                    const pItemText = pItem.textContent.toLowerCase();
+                    if (pItemText.includes(searchText)) {
+                        pItem.style.display = 'flex';
+                        anyItemMatches = true;
+                    } else {
+                        pItem.style.display = 'none';
+                    }
+                });
+                
+                // Show/hide the entire accordion item based on matches
+                if (headerMatches || anyItemMatches) {
+                    item.style.display = 'block';
+                    if (searchText && anyItemMatches) {
+                        // Auto-expand accordion if search matches items inside
+                        header.classList.add('active');
+                        content.classList.add('active');
+                    }
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Show a message if no results
+            const singleContainer = document.getElementById('single-peripherals-container');
+            const accordionContainer = document.getElementById('peripheralAccordion');
+            
+            const noSingleResults = Array.from(singlePeripheralButtons).every(btn => btn.style.display === 'none');
+            const noAccordionResults = Array.from(accordionItems).every(item => item.style.display === 'none');
+            
+            // If search is not empty and no results found, show message
+            if (searchText && noSingleResults && noAccordionResults) {
+                // Check if message already exists
+                let noResultsMsg = document.getElementById('no-results-message');
+                if (!noResultsMsg) {
+                    noResultsMsg = document.createElement('div');
+                    noResultsMsg.id = 'no-results-message';
+                    noResultsMsg.style.padding = '10px';
+                    noResultsMsg.style.color = '#666';
+                    noResultsMsg.style.fontStyle = 'italic';
+                    noResultsMsg.style.textAlign = 'center';
+                    accordionContainer.parentNode.insertBefore(noResultsMsg, accordionContainer);
+                }
+                noResultsMsg.textContent = `No peripherals found matching "${searchText}"`;
+                noResultsMsg.style.display = 'block';
+            } else {
+                // Hide message if it exists
+                const noResultsMsg = document.getElementById('no-results-message');
+                if (noResultsMsg) {
+                    noResultsMsg.style.display = 'none';
+                }
+            }
+        }
 		</script>
 	</body>
 </html>

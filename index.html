@@ -751,6 +751,12 @@
                 { id: "GRTC", port: "Mixed", pins: "(CLKOUT32K/GRTCLFCLKOUT, P0.04), (PWMOUT/GRTCPWM, P0.03), (CLK16M, P1.08)", notes: "Specific pin assignments", address: "0x500E2000" },
                 { id: "QDEC20", port: "Port 1", pins: "Any pins", notes: "", address: "0x500E0000" },
                 { id: "QDEC21", port: "Port 1", pins: "Any pins", notes: "", address: "0x500E1000" }
+            ],
+            "RADIO": [
+                { id: "RADIO", port: "Port 1", pins: "P1.05, P1.09, P1.10, P1.11, P1.12, P1.13, P1.14", notes: "Direction Finding pins for Bluetooth", address: "0x50010000" }
+            ],
+            "TRACE": [
+                { id: "TRACE", port: "Port 2", pins: "P2.06, P2.07, P2.08, P2.09, P2.10", notes: "Debug trace interface", address: "0x50008000" }
             ]
         };
 
@@ -892,6 +898,22 @@
                 { name: "GPIOTE PIN-1", description: "GPIOTE Channel 1", required: false, requiresClock: false, channel: 1 },
                 { name: "GPIOTE PIN-2", description: "GPIOTE Channel 2", required: false, requiresClock: false, channel: 2 },
                 { name: "GPIOTE PIN-3", description: "GPIOTE Channel 3", required: false, requiresClock: false, channel: 3 }
+            ],
+            "RADIO": [
+                { name: "RADIO[0]", description: "Direction Finding GPIO 0", required: false, requiresClock: false, specificPin: "P1.09" },
+                { name: "RADIO[1]", description: "Direction Finding GPIO 1", required: false, requiresClock: false, specificPin: "P1.10" },
+                { name: "RADIO[2]", description: "Direction Finding GPIO 2", required: false, requiresClock: false, specificPin: "P1.11" },
+                { name: "RADIO[3]", description: "Direction Finding GPIO 3", required: false, requiresClock: false, specificPin: "P1.12" },
+                { name: "RADIO[4]", description: "Direction Finding GPIO 4", required: false, requiresClock: false, specificPin: "P1.13" },
+                { name: "RADIO[5]", description: "Direction Finding GPIO 5", required: false, requiresClock: false, specificPin: "P1.14" },
+                { name: "RADIO[6]", description: "Direction Finding GPIO 6", required: false, requiresClock: false, specificPin: "P1.05" }
+            ],
+            "TRACE": [
+                { name: "TRACECLK", description: "Trace Clock", required: true, requiresClock: true, specificPin: "P2.06" },
+                { name: "TRACEDATA[0]", description: "Trace Data 0", required: true, requiresClock: false, specificPin: "P2.07" },
+                { name: "TRACEDATA[1]", description: "Trace Data 1", required: false, requiresClock: false, specificPin: "P2.08" },
+                { name: "TRACEDATA[2]", description: "Trace Data 2", required: false, requiresClock: false, specificPin: "P2.09" },
+                { name: "TRACEDATA[3]", description: "Trace Data 3", required: false, requiresClock: false, specificPin: "P2.10" }
             ]
         };
         

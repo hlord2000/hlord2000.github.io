@@ -974,10 +974,15 @@
             // SPI peripherals
             "SPIM/SPIS00": {
                 "P2.00": "SPIM DCX",
+                "P2.07": "SPIM DCX",
                 "P2.01": "SPIM SCK",
+                "P2.06": "SPIM SCK",
                 "P2.02": "SPIM SDO",
+                "P2.08": "SPIM SDO",
                 "P2.04": "SPIM SDI",
-                "P2.05": "SPIM CS"
+                "P2.09": "SPIM SDI",
+                "P2.05": "SPIM CS",
+                "P2.10": "SPIM CS"
             },
             "SPIM/SPIS20": {
                 "P2.00": "SPIM DCX",
@@ -2140,11 +2145,6 @@
                         // Only allow pins in the restricted list with the correct function
                         const allowedFunction = restrictedP2Pins[pin.name];
                         if (!allowedFunction || !func.name.includes(allowedFunction)) {
-                            return false;
-                        }
-                        
-                        // Specifically exclude P2.03 for SPIM/SPIS00
-                        if (pin.name === "P2.03") {
                             return false;
                         }
                     } else {

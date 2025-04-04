@@ -335,6 +335,19 @@
             justify-content: space-between;
             gap: 10px;
         }
+        
+        .button-group-vertical {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+        
+        .button-group-vertical button {
+            width: 100%;
+            margin: 0;
+        }
 
         button {
             padding: 10px 15px;
@@ -718,7 +731,7 @@
                 <ul class="selected-list" id="selectedList">
                     <li class="empty-message">No peripherals selected yet.</li>
                 </ul>
-                <div class="button-group">
+                <div class="button-group-vertical">
                     <button id="clearAllBtn">Clear All</button>
                     <button id="exportBtn">Export Configuration</button>
                     <button id="importBtn">Import Configuration</button>

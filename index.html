@@ -2592,11 +2592,15 @@
             }
             
             // If the selected pin is a P2 pin, suggest auto-selecting the rest of the P2 pins
-            return pinName.startsWith('P2.');
+            // Also check if we're in the middle of an auto-selection to prevent multiple popups
+            return pinName.startsWith('P2.') && !window.isAutoSelectingP2Pins;
         }
         
         // Helper function to auto-select P2 pins for a peripheral with P2 restrictions
         function autoSelectP2Pins(peripheral) {
+            // Set a flag to prevent multiple popups during auto-selection
+            window.isAutoSelectingP2Pins = true;
+            
             // Get the restricted P2 pins for this peripheral
             const restrictedPins = getRestrictedP2Pins(peripheral);
             
@@ -2631,6 +2635,11 @@
                     }
                 }
             });
+            
+            // Reset the flag after auto-selection is complete
+            setTimeout(() => {
+                window.isAutoSelectingP2Pins = false;
+            }, 100);
         }
         
         // Update GPIOTE pin dropdowns to filter out pins already selected in the same peripheral

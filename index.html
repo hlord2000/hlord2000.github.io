@@ -760,7 +760,7 @@
         // Data structures
         const peripherals = {
             "SPI": [
-                { id: "SPIM/SPIS00", port: "Port 2", pins: "Any pins", notes: "SCLK requires clock pin; 32MHz requires high drive low and high", address: "0x5004A000" },
+                { id: "SPIM/SPIS00", port: "Port 2", pins: "Dedicated pins only (P2.00, P2.01, P2.02, P2.04, P2.05)", notes: "SCLK requires clock pin; 32MHz requires high drive low and high", address: "0x5004A000" },
                 { id: "SPIM/SPIS20", port: "Port 1 or Port 2", pins: "Any pins (P1) or dedicated pins (P2)", notes: "SCLK requires clock pin", address: "0x500C6000" },
                 { id: "SPIM/SPIS21", port: "Port 1 or Port 2", pins: "Any pins (P1) or dedicated pins (P2)", notes: "SCLK requires clock pin", address: "0x500C7000" },
                 { id: "SPIM/SPIS22", port: "Port 1 or Port 2", pins: "Any pins (P1) or dedicated pins (P2)", notes: "SCLK requires clock pin", address: "0x500C8000" },
@@ -972,6 +972,13 @@
         let currentPackage = "QFN-48"; // Default package
         let p2PeripheralPinRestrictions = {
             // SPI peripherals
+            "SPIM/SPIS00": {
+                "P2.00": "SPIM DCX",
+                "P2.01": "SPIM SCK",
+                "P2.02": "SPIM SDO",
+                "P2.04": "SPIM SDI",
+                "P2.05": "SPIM CS"
+            },
             "SPIM/SPIS20": {
                 "P2.00": "SPIM DCX",
                 "P2.01": "SPIM SCK",
@@ -2124,22 +2131,41 @@
                 
                 // For peripherals with P2 restrictions:
                 if (hasP2Restrictions) {
-                    // If we're already using P1 pins, don't allow P2 pins
-                    if (usingP1Pins && pin.name.startsWith('P2.')) {
-                        return false;
-                    }
-                    
-                    // If we're already using P2 pins, don't allow P1 pins
-                    if (usingP2Pins && pin.name.startsWith('P1.')) {
-                        return false;
-                    }
-                    
-                    // If this is a P2 pin, check if it's in the restricted list for this function
-                    if (pin.name.startsWith('P2.')) {
-                        // Check if this P2 pin is allowed for this function
+                    // Special case for SPIM/SPIS00 - only allow its dedicated P2 pins
+                    if (currentPeripheral.id === "SPIM/SPIS00") {
+                        if (!pin.name.startsWith('P2.')) {
+                            return false;
+                        }
+                        
+                        // Only allow pins in the restricted list with the correct function
                         const allowedFunction = restrictedP2Pins[pin.name];
                         if (!allowedFunction || !func.name.includes(allowedFunction)) {
                             return false;
+                        }
+                        
+                        // Specifically exclude P2.03 for SPIM/SPIS00
+                        if (pin.name === "P2.03") {
+                            return false;
+                        }
+                    } else {
+                        // For other peripherals with P2 restrictions:
+                        // If we're already using P1 pins, don't allow P2 pins
+                        if (usingP1Pins && pin.name.startsWith('P2.')) {
+                            return false;
+                        }
+                        
+                        // If we're already using P2 pins, don't allow P1 pins
+                        if (usingP2Pins && pin.name.startsWith('P1.')) {
+                            return false;
+                        }
+                        
+                        // If this is a P2 pin, check if it's in the restricted list for this function
+                        if (pin.name.startsWith('P2.')) {
+                            // Check if this P2 pin is allowed for this function
+                            const allowedFunction = restrictedP2Pins[pin.name];
+                            if (!allowedFunction || !func.name.includes(allowedFunction)) {
+                                return false;
+                            }
                         }
                     }
                 }
@@ -2548,6 +2574,20 @@
         function shouldAutoSelectP2Pins(peripheral, pinName) {
             // If this peripheral doesn't have P2 restrictions, no auto-selection
             if (!hasP2PinRestrictions(peripheral)) {
+                return false;
+            }
+            
+            // Don't suggest auto-selection for SPIM/SPIS00 as it has fixed pins
+            if (peripheral.id === "SPIM/SPIS00") {
+                return false;
+            }
+            
+            // If we already have some P2 pins selected, don't suggest again
+            const hasOtherP2Pins = Object.keys(tempSelectedPins).some(pin => 
+                pin !== pinName && pin.startsWith('P2.')
+            );
+            
+            if (hasOtherP2Pins) {
                 return false;
             }
             

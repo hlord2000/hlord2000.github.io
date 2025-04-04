@@ -446,6 +446,12 @@
             border-color: var(--primary-color);
         }
         
+        .single-peripheral-btn.disabled {
+            opacity: 0.5;
+            background-color: var(--disabled-color);
+            cursor: not-allowed;
+        }
+        
         .peripherals-section {
             margin-bottom: 20px;
         }
@@ -920,10 +926,20 @@
         // Global state
         let selectedPeripherals = [];
         let usedPins = {};
+        let usedAddresses = {}; // Track used address spaces
         let currentPeripheral = null;
         let currentCategory = null;
         let tempSelectedPins = {}; // Used for storing pin selections temporarily during modal dialog
         let currentPackage = "QFN-48"; // Default package
+        
+        // Helper function to check if a peripheral has an address conflict with already selected peripherals
+        function hasAddressConflict(peripheral) {
+            // If peripheral has no address, it can't conflict
+            if (!peripheral.address) return false;
+            
+            // Check if this address is already in use
+            return !!usedAddresses[peripheral.address];
+        }
         
         // Helper function to get peripheral functions based on category and peripheral
         function getPeripheralFunctions(category, peripheral) {
@@ -1070,6 +1086,11 @@
                             // Open for editing
                             editPeripheral(peripheral.id);
                         } else {
+                            // Check for address conflicts
+                            if (hasAddressConflict(peripheral)) {
+                                alert(`Cannot select ${peripheral.id} because it shares the same address space (${peripheral.address}) with another selected peripheral.`);
+                                return;
+                            }
                             openPinSelectionModal(peripheral, category);
                         }
                     });
@@ -1110,6 +1131,11 @@
                                 // If already selected, open for editing
                                 editPeripheral(item.peripheral.id);
                             } else if (!this.classList.contains('disabled')) {
+                                // Check for address conflicts
+                                if (hasAddressConflict(item.peripheral)) {
+                                    alert(`Cannot select ${item.peripheral.id} because it shares the same address space (${item.peripheral.address}) with another selected peripheral.`);
+                                    return;
+                                }
                                 openPinSelectionModal(item.peripheral, item.category);
                             }
                         });
@@ -1278,6 +1304,12 @@
                     const pin = Object.keys(p.pinFunctions).find(pin => p.pinFunctions[pin] === func);
                     return usedPins[pin] && usedPins[pin].isSystem;
                 });
+                
+                // If not keeping this peripheral, free its address space
+                if (!isSystem && p.peripheral.address) {
+                    delete usedAddresses[p.peripheral.address];
+                }
+                
                 return isSystem;
             });
             
@@ -1762,6 +1794,11 @@
                     peripheral: currentPeripheral,
                     pinFunctions: { ...tempSelectedPins }
                 };
+                
+                // Register the address space as used
+                if (currentPeripheral.address) {
+                    usedAddresses[currentPeripheral.address] = currentPeripheral.id;
+                }
                 
                 // Check if this peripheral is already in the list (for editing)
                 const existingIndex = selectedPeripherals.findIndex(p => p.id === currentPeripheral.id);
@@ -2409,6 +2446,11 @@
             // Remove from selected peripherals
             selectedPeripherals.splice(index, 1);
             
+            // Free up the address space
+            if (peripheral.peripheral.address) {
+                delete usedAddresses[peripheral.peripheral.address];
+            }
+            
             // Update UI
             updateSelectedPeripheralsList();
             updatePinDisplay();
@@ -2440,6 +2482,66 @@
                     
                     if (usedPins[pinName].isSystem) {
                         pinElement.classList.add('system');
+                    }
+                }
+            });
+            
+            // Update peripheral UI based on address conflicts
+            updatePeripheralUIForAddressConflicts();
+        }
+        
+        // Update peripheral UI to disable items with address conflicts
+        function updatePeripheralUIForAddressConflicts() {
+            // Update single-instance peripherals
+            document.querySelectorAll('#single-peripherals-container .single-peripheral-btn').forEach(btn => {
+                const peripheralId = btn.dataset.id;
+                const category = btn.dataset.category;
+                
+                // Find the peripheral data
+                const peripheralData = peripherals[category]?.find(p => p.id === peripheralId);
+                if (!peripheralData) return;
+                
+                // Check if this peripheral is already selected
+                const isSelected = btn.classList.contains('selected');
+                
+                // If not selected, check for address conflicts
+                if (!isSelected) {
+                    const hasConflict = hasAddressConflict(peripheralData);
+                    
+                    // Update UI based on conflict status
+                    if (hasConflict) {
+                        btn.classList.add('disabled');
+                        btn.title = `Cannot select: shares address space ${peripheralData.address} with ${usedAddresses[peripheralData.address]}`;
+                    } else {
+                        btn.classList.remove('disabled');
+                        btn.title = '';
+                    }
+                }
+            });
+            
+            // Update multi-instance peripherals
+            document.querySelectorAll('.peripheral-item').forEach(item => {
+                const peripheralId = item.dataset.id;
+                const category = item.dataset.category;
+                
+                // Find the peripheral data
+                const peripheralData = peripherals[category]?.find(p => p.id === peripheralId);
+                if (!peripheralData) return;
+                
+                // Check if this peripheral is already selected
+                const isSelected = item.classList.contains('selected');
+                
+                // If not selected, check for address conflicts
+                if (!isSelected) {
+                    const hasConflict = hasAddressConflict(peripheralData);
+                    
+                    // Update UI based on conflict status
+                    if (hasConflict) {
+                        item.classList.add('disabled');
+                        item.title = `Cannot select: shares address space ${peripheralData.address} with ${usedAddresses[peripheralData.address]}`;
+                    } else {
+                        item.classList.remove('disabled');
+                        item.title = '';
                     }
                 }
             });

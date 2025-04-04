@@ -732,6 +732,9 @@
             </div>
             <div id="modalBody">
                 <p>Select which pins to use for each peripheral function:</p>
+                <div id="pinRestrictionWarning" style="display: none; background-color: #fff3cd; color: #856404; padding: 10px; margin-bottom: 15px; border: 1px solid #ffeeba; border-radius: 5px;">
+                    <strong>Note:</strong> This peripheral has specific pin restrictions when using P2 pins. You must either use all P1 pins or the specific P2 pins designated for this peripheral.
+                </div>
                 <table class="pin-selection-table" id="pinSelectionTable">
                     <thead>
                         <tr>
@@ -967,6 +970,36 @@
         let currentCategory = null;
         let tempSelectedPins = {}; // Used for storing pin selections temporarily during modal dialog
         let currentPackage = "QFN-48"; // Default package
+        let p2PeripheralPinRestrictions = {
+            // SPI peripherals
+            "SPIM/SPIS20": {
+                "P2.00": "SPIM DCX",
+                "P2.01": "SPIM SCK",
+                "P2.02": "SPIM SDO",
+                "P2.04": "SPIM SDI",
+                "P2.05": "SPIM CS"
+            },
+            "SPIM/SPIS21": {
+                "P2.06": "SPIM SCK",
+                "P2.07": "SPIM DCX",
+                "P2.08": "SPIM SDO",
+                "P2.09": "SPIM SDI",
+                "P2.10": "SPIM CS"
+            },
+            // UART peripherals
+            "UARTE20": {
+                "P2.00": "UARTE RXD",
+                "P2.02": "UARTE TXD",
+                "P2.04": "UARTE CTS",
+                "P2.05": "UARTE RTS"
+            },
+            "UARTE21": {
+                "P2.07": "UARTE RXD",
+                "P2.08": "UARTE TXD",
+                "P2.09": "UARTE CTS",
+                "P2.10": "UARTE RTS"
+            }
+        };
         
         // Helper function to check if a peripheral has an address conflict with already selected peripherals
         function hasAddressConflict(peripheral) {
@@ -975,6 +1008,60 @@
             
             // Check if this address is already in use
             return !!usedAddresses[peripheral.address];
+        }
+        
+        // Helper function to check if a peripheral has P2 pin restrictions
+        function hasP2PinRestrictions(peripheral) {
+            return !!p2PeripheralPinRestrictions[peripheral.id];
+        }
+        
+        // Helper function to get the restricted P2 pins for a peripheral
+        function getRestrictedP2Pins(peripheral) {
+            return p2PeripheralPinRestrictions[peripheral.id] || {};
+        }
+        
+        // Helper function to check if a pin selection is valid for a peripheral with P2 restrictions
+        function isValidPinSelectionForP2Peripheral(peripheral, pinSelections) {
+            // If this peripheral doesn't have P2 restrictions, any selection is valid
+            if (!hasP2PinRestrictions(peripheral)) {
+                return true;
+            }
+            
+            // Get all selected pins
+            const selectedPins = Object.keys(pinSelections);
+            
+            // Check if any pins are selected
+            if (selectedPins.length === 0) {
+                return true; // No pins selected yet, so no conflict
+            }
+            
+            // Check if we're using P2 pins
+            const usingP2Pins = selectedPins.some(pin => pin.startsWith('P2.'));
+            
+            // Check if we're using P1 pins
+            const usingP1Pins = selectedPins.some(pin => pin.startsWith('P1.'));
+            
+            // Cannot mix P1 and P2 pins for these peripherals
+            if (usingP1Pins && usingP2Pins) {
+                return false;
+            }
+            
+            // If using P2 pins, they must match the restrictions
+            if (usingP2Pins) {
+                const restrictedPins = getRestrictedP2Pins(peripheral);
+                
+                // Check if each selected P2 pin is in the restricted list with the correct function
+                for (const [pin, func] of Object.entries(pinSelections)) {
+                    if (pin.startsWith('P2.')) {
+                        // If this P2 pin is not in the restricted list or has the wrong function, it's invalid
+                        if (!restrictedPins[pin] || !func.includes(restrictedPins[pin])) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            
+            return true;
         }
         
         // Helper function to get peripheral functions based on category and peripheral
@@ -1746,6 +1833,24 @@
                 return false;
             }
             
+            // Check if the pin selection is valid for peripherals with P2 restrictions
+            if (hasP2PinRestrictions(peripheral)) {
+                if (!isValidPinSelectionForP2Peripheral(peripheral, tempSelectedPins)) {
+                    // Determine the specific error message
+                    const usingP1Pins = Object.keys(tempSelectedPins).some(pin => pin.startsWith('P1.'));
+                    const usingP2Pins = Object.keys(tempSelectedPins).some(pin => pin.startsWith('P2.'));
+                    
+                    if (usingP1Pins && usingP2Pins) {
+                        alert(`Cannot mix P1 and P2 pins for ${peripheral.id}. You must use either all P1 pins or the specific P2 pins.`);
+                    } else if (usingP2Pins) {
+                        alert(`Invalid P2 pin selection for ${peripheral.id}. You must use the specific P2 pins designated for this peripheral.`);
+                    } else {
+                        alert(`Invalid pin selection for ${peripheral.id}.`);
+                    }
+                    return false;
+                }
+            }
+            
             // Update the peripheral's pin functions
             selectedPeripherals[peripheralIndex].pinFunctions = { ...tempSelectedPins };
             
@@ -1773,6 +1878,14 @@
             
             // Set the modal title
             document.getElementById('modalTitle').textContent = `Select Pins for ${peripheral.id}`;
+            
+            // Show warning for peripherals with P2 pin restrictions
+            const warningElement = document.getElementById('pinRestrictionWarning');
+            if (hasP2PinRestrictions(peripheral)) {
+                warningElement.style.display = 'block';
+            } else {
+                warningElement.style.display = 'none';
+            }
             
             // Get the functions for this peripheral type
             let functionsToUse = getPeripheralFunctions(category, peripheral);
@@ -1839,6 +1952,24 @@
                 if (conflictingPins.length > 0) {
                     alert(`Cannot assign pins due to conflicts:\n${conflictingPins.join('\n')}`);
                     return;
+                }
+                
+                // Check if the pin selection is valid for peripherals with P2 restrictions
+                if (hasP2PinRestrictions(currentPeripheral)) {
+                    if (!isValidPinSelectionForP2Peripheral(currentPeripheral, tempSelectedPins)) {
+                        // Determine the specific error message
+                        const usingP1Pins = Object.keys(tempSelectedPins).some(pin => pin.startsWith('P1.'));
+                        const usingP2Pins = Object.keys(tempSelectedPins).some(pin => pin.startsWith('P2.'));
+                        
+                        if (usingP1Pins && usingP2Pins) {
+                            alert(`Cannot mix P1 and P2 pins for ${currentPeripheral.id}. You must use either all P1 pins or the specific P2 pins.`);
+                        } else if (usingP2Pins) {
+                            alert(`Invalid P2 pin selection for ${currentPeripheral.id}. You must use the specific P2 pins designated for this peripheral.`);
+                        } else {
+                            alert(`Invalid pin selection for ${currentPeripheral.id}.`);
+                        }
+                        return;
+                    }
                 }
                 
                 // All checks passed, add the peripheral
@@ -1964,6 +2095,16 @@
                 return;
             }
             
+            // Check if we're dealing with a peripheral that has P2 pin restrictions
+            const hasP2Restrictions = hasP2PinRestrictions(currentPeripheral);
+            
+            // Check if we've already selected any pins for this peripheral
+            const usingP1Pins = Object.keys(tempSelectedPins).some(pin => pin.startsWith('P1.'));
+            const usingP2Pins = Object.keys(tempSelectedPins).some(pin => pin.startsWith('P2.'));
+            
+            // Get the restricted P2 pins for this function if applicable
+            const restrictedP2Pins = hasP2Restrictions ? getRestrictedP2Pins(currentPeripheral) : {};
+            
             // Get all available pins that match the requirements
             const availablePins = pinData.filter(pin => {
                 // Must be an I/O pin
@@ -1980,6 +2121,28 @@
                 
                 // Pin must not be temporarily selected for another function in the current dialog
                 if (tempSelectedPins[pin.name] && tempSelectedPins[pin.name] !== func.name) return false;
+                
+                // For peripherals with P2 restrictions:
+                if (hasP2Restrictions) {
+                    // If we're already using P1 pins, don't allow P2 pins
+                    if (usingP1Pins && pin.name.startsWith('P2.')) {
+                        return false;
+                    }
+                    
+                    // If we're already using P2 pins, don't allow P1 pins
+                    if (usingP2Pins && pin.name.startsWith('P1.')) {
+                        return false;
+                    }
+                    
+                    // If this is a P2 pin, check if it's in the restricted list for this function
+                    if (pin.name.startsWith('P2.')) {
+                        // Check if this P2 pin is allowed for this function
+                        const allowedFunction = restrictedP2Pins[pin.name];
+                        if (!allowedFunction || !func.name.includes(allowedFunction)) {
+                            return false;
+                        }
+                    }
+                }
                 
                 return true;
             });
@@ -2334,6 +2497,15 @@
                         // If a new pin is selected, add it to tempSelectedPins
                         if (selectedPin) {
                             tempSelectedPins[selectedPin] = functionName;
+                            
+                            // Check if we should auto-select P2 pins
+                            if (shouldAutoSelectP2Pins(currentPeripheral, selectedPin)) {
+                                // Ask the user if they want to auto-select the P2 pins
+                                if (confirm(`You've selected a P2 pin for ${currentPeripheral.id}. Would you like to automatically select the designated P2 pins for all functions?`)) {
+                                    autoSelectP2Pins(currentPeripheral);
+                                    return; // Skip the normal update since autoSelectP2Pins will handle it
+                                }
+                            }
                         }
                         
                         // Update all dropdowns to reflect the new selection
@@ -2367,6 +2539,55 @@
                     // Restore the selection if it's still valid
                     if (currentValue && (select.querySelector(`option[value="${currentValue}"]`))) {
                         select.value = currentValue;
+                    }
+                }
+            });
+        }
+        
+        // Helper function to check if a peripheral with P2 restrictions should auto-select P2 pins
+        function shouldAutoSelectP2Pins(peripheral, pinName) {
+            // If this peripheral doesn't have P2 restrictions, no auto-selection
+            if (!hasP2PinRestrictions(peripheral)) {
+                return false;
+            }
+            
+            // If the selected pin is a P2 pin, suggest auto-selecting the rest of the P2 pins
+            return pinName.startsWith('P2.');
+        }
+        
+        // Helper function to auto-select P2 pins for a peripheral with P2 restrictions
+        function autoSelectP2Pins(peripheral) {
+            // Get the restricted P2 pins for this peripheral
+            const restrictedPins = getRestrictedP2Pins(peripheral);
+            
+            // For each function in the pin selection table
+            const tableBody = document.getElementById('pinSelectionTableBody');
+            const rows = tableBody.querySelectorAll('tr');
+            
+            rows.forEach(row => {
+                const funcNameCell = row.querySelector('td:first-child');
+                if (!funcNameCell) return;
+                
+                const funcName = funcNameCell.textContent;
+                const select = row.querySelector('select');
+                
+                if (select) {
+                    // Find the matching P2 pin for this function
+                    for (const [pin, func] of Object.entries(restrictedPins)) {
+                        if (funcName.includes(func)) {
+                            // Find the option with this pin value
+                            const option = select.querySelector(`option[value="${pin}"]`);
+                            if (option) {
+                                // Select this pin
+                                select.value = pin;
+                                
+                                // Trigger the change event
+                                const event = new Event('change');
+                                select.dispatchEvent(event);
+                                
+                                break;
+                            }
+                        }
                     }
                 }
             });

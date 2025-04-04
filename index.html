@@ -247,6 +247,28 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .selected-item:hover {
+            background-color: #d9e9ff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .selected-item:after {
+            content: "✏️";
+            position: absolute;
+            top: 10px;
+            right: 50px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .selected-item:hover:after {
+            opacity: 1;
         }
         
         .selected-item.system {
@@ -1565,6 +1587,12 @@
                 return;
             }
             
+            // Special case for simple peripherals that can't be edited
+            if (peripheralId === "32.768 kHz Crystal" || peripheralId === "NFC Antenna") {
+                alert(`${peripheralId} uses fixed pins and cannot be edited.`);
+                return;
+            }
+            
             // Store current editing state
             currentPeripheral = peripheralData;
             currentCategory = category;
@@ -2410,6 +2438,9 @@
                     <div>
                         <strong>${peripheral.id}</strong>
                         <div>${pinList}</div>
+                        <div style="font-size: 0.8em; color: #666; margin-top: 5px;">
+                            <i>Click to edit pin assignments</i>
+                        </div>
                     </div>
                     <button class="remove-btn ${isSystem ? 'disabled' : ''}" 
                             data-id="${peripheral.id}" 
@@ -2421,10 +2452,16 @@
                 // Add event listener to the remove button
                 const removeBtn = item.querySelector('.remove-btn');
                 if (!isSystem) {
-                    removeBtn.addEventListener('click', function() {
+                    removeBtn.addEventListener('click', function(e) {
+                        e.stopPropagation(); // Prevent triggering the parent click
                         removePeripheral(peripheral.id);
                     });
                 }
+                
+                // Make the entire item clickable to edit the peripheral
+                item.addEventListener('click', function() {
+                    editPeripheral(peripheral.id);
+                });
                 
                 selectedList.appendChild(item);
             });

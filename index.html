@@ -718,7 +718,27 @@
                 <div class="button-group">
                     <button id="clearAllBtn">Clear All</button>
                     <button id="exportBtn">Export Configuration</button>
+                    <button id="importBtn">Import Configuration</button>
                 </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Import Configuration Modal -->
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Import Configuration</h2>
+                <span class="close" id="closeImportModal">&times;</span>
+            </div>
+            <div id="importModalBody">
+                <p>Paste your exported JSON configuration below:</p>
+                <textarea id="importJsonInput" style="width: 100%; height: 200px; margin-bottom: 15px; font-family: monospace;"></textarea>
+                <div id="importError" style="color: red; margin-bottom: 10px; display: none;"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelImport">Cancel</button>
+                <button id="confirmImport">Import</button>
             </div>
         </div>
     </div>
@@ -1137,6 +1157,7 @@
             // Set up event listeners
             document.getElementById('clearAllBtn').addEventListener('click', clearAllPeripherals);
             document.getElementById('exportBtn').addEventListener('click', exportConfiguration);
+            document.getElementById('importBtn').addEventListener('click', openImportModal);
             document.getElementById('searchPeripherals').addEventListener('input', filterPeripherals);
             
             // Simple peripherals checkboxes
@@ -1144,9 +1165,12 @@
             document.getElementById('nfc-checkbox').addEventListener('change', toggleNFC);
             
             // Modal event listeners
-            document.querySelector('.close').addEventListener('click', closePinSelectionModal);
+            document.querySelector('#pinSelectionModal .close').addEventListener('click', closePinSelectionModal);
+            document.getElementById('closeImportModal').addEventListener('click', closeImportModal);
             document.getElementById('cancelPinSelection').addEventListener('click', closePinSelectionModal);
             document.getElementById('confirmPinSelection').addEventListener('click', confirmPinSelection);
+            document.getElementById('cancelImport').addEventListener('click', closeImportModal);
+            document.getElementById('confirmImport').addEventListener('click', importConfiguration);
             
             // Package selection
             document.getElementById('packageSelector').addEventListener('change', handlePackageChange);
@@ -1427,9 +1451,9 @@
         }
         
         // Clear all peripherals
-        function clearAllPeripherals() {
-            // Confirm with the user
-            if (!confirm('Are you sure you want to clear all peripherals? This action cannot be undone.')) {
+        function clearAllPeripherals(askConfirmation = true) {
+            // Confirm with the user if needed
+            if (askConfirmation && !confirm('Are you sure you want to clear all peripherals? This action cannot be undone.')) {
                 return;
             }
             
@@ -1472,7 +1496,8 @@
                 peripherals: selectedPeripherals.map(p => ({
                     id: p.id,
                     category: p.category,
-                    pinAssignments: p.pinFunctions
+                    pinAssignments: p.pinFunctions,
+                    peripheral: p.peripheral
                 })),
                 pinAssignments: Object.keys(usedPins).map(pin => ({
                     pin: pin,
@@ -1480,7 +1505,11 @@
                     function: usedPins[pin].function,
                     required: usedPins[pin].required,
                     isSystem: usedPins[pin].isSystem || false
-                }))
+                })),
+                usedAddresses: Object.keys(usedAddresses).reduce((obj, key) => {
+                    obj[key] = usedAddresses[key];
+                    return obj;
+                }, {})
             };
             
             // Convert to JSON
@@ -1501,6 +1530,122 @@
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
             }, 100);
+        }
+        
+        // Open import modal
+        function openImportModal() {
+            document.getElementById('importModal').style.display = 'block';
+            document.getElementById('importJsonInput').value = '';
+            document.getElementById('importError').style.display = 'none';
+        }
+        
+        // Close import modal
+        function closeImportModal() {
+            document.getElementById('importModal').style.display = 'none';
+        }
+        
+        // Import configuration
+        function importConfiguration() {
+            const jsonInput = document.getElementById('importJsonInput').value.trim();
+            const errorElement = document.getElementById('importError');
+            
+            if (!jsonInput) {
+                errorElement.textContent = 'Please paste a JSON configuration.';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            try {
+                // Parse the JSON
+                const config = JSON.parse(jsonInput);
+                
+                // Validate the configuration
+                if (!config.package || !config.peripherals || !config.pinAssignments) {
+                    throw new Error('Invalid configuration format. Missing required fields.');
+                }
+                
+                // Confirm with the user
+                if (!confirm('This will replace your current configuration. Continue?')) {
+                    return;
+                }
+                
+                // Clear current configuration
+                clearAllPeripherals(false); // Don't ask for confirmation
+                
+                // Set the package
+                if (config.package && document.querySelector(`#packageSelector option[value="${config.package}"]`)) {
+                    document.getElementById('packageSelector').value = config.package;
+                    currentPackage = config.package;
+                    document.getElementById('chipTitleDisplay').textContent = `${currentPackage} Pin Layout`;
+                }
+                
+                // Restore used addresses
+                if (config.usedAddresses) {
+                    for (const [address, peripheral] of Object.entries(config.usedAddresses)) {
+                        usedAddresses[address] = peripheral;
+                    }
+                }
+                
+                // Restore pin assignments
+                config.pinAssignments.forEach(assignment => {
+                    usedPins[assignment.pin] = {
+                        peripheral: assignment.peripheral,
+                        function: assignment.function,
+                        required: assignment.required,
+                        isSystem: assignment.isSystem || false
+                    };
+                });
+                
+                // Restore peripherals
+                config.peripherals.forEach(p => {
+                    // Find the peripheral data in our peripherals object
+                    let peripheralData = null;
+                    let category = p.category;
+                    
+                    // For simple peripherals like XL1/XL2 and NFC
+                    if (p.id === "32.768 kHz Crystal") {
+                        document.getElementById('xl1xl2-checkbox').checked = true;
+                    } else if (p.id === "NFC Antenna") {
+                        document.getElementById('nfc-checkbox').checked = true;
+                    } else {
+                        // For regular peripherals, find the data
+                        for (const cat in peripherals) {
+                            const found = peripherals[cat].find(item => item.id === p.id);
+                            if (found) {
+                                peripheralData = found;
+                                category = cat;
+                                break;
+                            }
+                        }
+                        
+                        // If we found the peripheral data, add it to selected peripherals
+                        if (peripheralData) {
+                            selectedPeripherals.push({
+                                id: p.id,
+                                category: category,
+                                peripheral: p.peripheral || peripheralData,
+                                pinFunctions: p.pinAssignments
+                            });
+                        }
+                    }
+                });
+                
+                // Update UI
+                updateSelectedPeripheralsList();
+                updatePinDisplay();
+                
+                // Close the modal
+                closeImportModal();
+                
+                // Show success message
+                alert('Configuration imported successfully!');
+                
+            } catch (error) {
+                // Show error message
+                errorElement.textContent = `Error importing configuration: ${error.message}`;
+                errorElement.style.display = 'block';
+                console.error('Import error:', error);
+            }
         }
         
         // Toggle NFC pins

@@ -370,6 +370,16 @@
             color: var(--light-text);
             cursor: not-allowed;
         }
+        
+        .secondary-btn {
+            background-color: #f1f1f1;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .secondary-btn:hover {
+            background-color: #e0e0e0;
+        }
 
         /* Pin positioning - Fixed for better alignment */
         .chip-container {
@@ -748,8 +758,17 @@
                 <span class="close" id="closeImportModal">&times;</span>
             </div>
             <div id="importModalBody">
-                <p>Paste your exported JSON configuration below:</p>
-                <textarea id="importJsonInput" style="width: 100%; height: 200px; margin-bottom: 15px; font-family: monospace;"></textarea>
+                <div style="display: flex; margin-bottom: 15px;">
+                    <div style="flex: 1; padding-right: 10px;">
+                        <p>Upload a configuration file:</p>
+                        <input type="file" id="importFileInput" accept=".json" style="width: 100%; margin-bottom: 10px;">
+                        <button id="loadFileBtn" class="secondary-btn" style="width: 100%;">Load File</button>
+                    </div>
+                    <div style="flex: 1; padding-left: 10px; border-left: 1px solid #ccc;">
+                        <p>Or paste your JSON configuration:</p>
+                        <textarea id="importJsonInput" style="width: 100%; height: 150px; font-family: monospace;"></textarea>
+                    </div>
+                </div>
                 <div id="importError" style="color: red; margin-bottom: 10px; display: none;"></div>
             </div>
             <div class="modal-footer">
@@ -1558,6 +1577,45 @@
         // Close import modal
         function closeImportModal() {
             document.getElementById('importModal').style.display = 'none';
+        }
+        
+        // Load configuration from file
+        function loadConfigurationFile() {
+            const fileInput = document.getElementById('importFileInput');
+            const errorElement = document.getElementById('importError');
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                errorElement.textContent = 'Please select a file to upload.';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            if (!file.name.endsWith('.json')) {
+                errorElement.textContent = 'Please select a JSON file.';
+                errorElement.style.display = 'block';
+                return;
+            }
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const jsonContent = e.target.result;
+                    document.getElementById('importJsonInput').value = jsonContent;
+                    errorElement.style.display = 'none';
+                } catch (error) {
+                    errorElement.textContent = `Error reading file: ${error.message}`;
+                    errorElement.style.display = 'block';
+                }
+            };
+            
+            reader.onerror = function() {
+                errorElement.textContent = 'Error reading file.';
+                errorElement.style.display = 'block';
+            };
+            
+            reader.readAsText(file);
         }
         
         // Import configuration

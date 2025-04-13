@@ -203,7 +203,7 @@
         }
 
         .pin.clock {
-            background-color: var(--warning-color);
+	    border: 2px solid var(--warning-color);
         }
 
         .pin.required {
@@ -820,7 +820,7 @@
             <div id="modalBody">
                 <p>Select which pins to use for each peripheral function:</p>
                 <div id="pinRestrictionWarning" style="display: none; background-color: #fff3cd; color: #856404; padding: 10px; margin-bottom: 15px; border: 1px solid #ffeeba; border-radius: 5px;">
-                    <strong>Note:</strong> This peripheral has specific pin restrictions when using P2 pins. You must either use all P1 pins or the specific P2 pins designated for this peripheral.
+                    <strong>Note:</strong> This peripheral supports both Port 1 and specific Port 2 pins. For optimal power consumption, Port 1 is recommended. If using Port 2, only the specifically designated P2 pins for this peripheral can be used.
                 </div>
                 <table class="pin-selection-table" id="pinSelectionTable">
                     <thead>

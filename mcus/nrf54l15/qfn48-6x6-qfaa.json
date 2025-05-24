@@ -1,0 +1,223 @@
+{
+  "$schema": "../mcuSchema.json",
+  "partInfo": {
+    "partNumber": "nRF54L15-QFAA",
+    "packageType": "QFN-48",
+    "sizeDescription": "6x6x0.85mm, 0.4mm pitch QFN-48",
+    "datasheetVersion": "https://docs-be.nordicsemi.com/bundle/ps_nrf54L15/page/pdf/nRF54L15_nRF54L10_nRF54L05_Datasheet_v0.8.pdf"
+  },
+  "renderConfig": {
+    "canvasDefaults": {
+        "padding": 20
+    },
+    "chipBody": {
+        "width": 6,
+        "height": 6,
+        "centerX": 0,
+        "centerY": 0,
+        "cornerRadius": 0.3,
+        "fillColor": "#4A4A4A",
+        "strokeColor": "#222222",
+        "strokeWidth": 0.5,
+        "orientationMarker": {
+            "size": 0.3,
+            "fillColor": "#FFFFFF",
+            "offsetX": -3.6,
+            "offsetY": 2.7
+        }
+    },
+    "layoutStrategy": {
+        "layoutType": "quadPerimeter",
+        "pinCounts": {
+            "bottom": 12,
+            "left": 12,
+            "right": 12,
+            "top": 12
+        },
+        "numberingStart": {
+            "corner": "topLeft",
+            "direction": "counterClockwise",
+            "side": "left"
+        },
+        "pinOffsetFromEdge": 0,
+        "pinPitch": 0.4
+    },
+    "pinDefaults": {
+        "shape": "rect",
+        "width": 0.1,
+        "height": 0.2,
+        "fillColor": "#B0B0B0",
+        "strokeColor": "#707070",
+        "strokeWidth": 0.2
+    }
+  },
+  "pins": [
+    {
+        "packagePinId": "1",
+        "name": ""
+    }
+  ],
+  "socPeripherals": [
+    {
+      "id": "SPIM/SPIS00",
+      "type": "SPI",
+      "baseAddress": "0x4004A000",
+      "description": "High speed SPIM/SPIS00 for GPIO port 2",
+      "signals": [
+        {
+          "name": "SCK",
+          "direction": "inout",
+          "isMandatory": true,
+          "requiresClockCapablePin": true,
+          "allowedGpio": ["P2.01", "P2.06"],
+          "driveStrengthRequirement": "extra high",
+          "specialNotes": "N/A"
+        },
+        {
+          "name": "SDO",
+          "direction": "output",
+          "isMandatory": false,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P2.02", "P2.08"],
+          "driveStrengthRequirement": "extra high",
+          "specialNotes": "N/A"
+        },
+        {
+          "name": "SDI",
+          "direction": "input",
+          "isMandatory": false,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P2.04", "P2.09"],
+          "driveStrengthRequirement": "extra high",
+          "specialNotes": "N/A"
+        },
+        {
+          "name": "CS",
+          "direction": "inout",
+          "isMandatory": false,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P2.05", "P2.10"],
+          "driveStrengthRequirement": "extra high",
+          "specialNotes": "N/A"
+        },
+        {
+          "name": "DCX",
+          "direction": "output",
+          "isMandatory": false,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P2.00", "P2.07"],
+          "driveStrengthRequirement": "extra high",
+          "specialNotes": "N/A"
+        }
+      ]    
+    },
+    {
+      "id": "UARTE00",
+      "type": "UART",
+      "baseAddress": "0x4004A000",
+      "description": "High speed UART for GPIO port 2",
+      "signals": [
+        {
+          "name": "TXD",
+          "direction": "output",
+          "isMandatory": true,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P2*"],
+          "driveStrengthRequirement": "standard",
+          "specialNotes": "N/A"
+        },
+        {
+          "name": "RXD",
+          "direction": "input",
+          "isMandatory": true,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P2*"],
+          "driveStrengthRequirement": "standard",
+          "specialNotes": "N/A"
+        },
+        {
+          "name": "CTS",
+          "direction": "output",
+          "isMandatory": false,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P2*"],
+          "driveStrengthRequirement": "standard",
+          "specialNotes": "N/A"
+        },
+        {
+          "name": "RTS",
+          "direction": "input",
+          "isMandatory": false,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P2*"],
+          "driveStrengthRequirement": "standard",
+          "specialNotes": "N/A"
+        }
+      ]
+    },
+    {
+      "id": "RADIO",
+      "type": "RADIO",
+      "baseAddress": "0x4008A000",
+      "description": "Radio controlled GPIO for features like channel sounding antenna switching",
+      "signals": [
+        {
+          "name": "RADIO[0]",
+          "direction": "output",
+          "isMandatory": false,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P1.09"],
+          "driveStrengthRequirement": "standard"
+        },
+                {
+          "name": "RADIO[1]",
+          "direction": "output",
+          "isMandatory": false,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P1.10"],
+          "driveStrengthRequirement": "standard"
+        },
+                {
+          "name": "RADIO[2]",
+          "direction": "output",
+          "isMandatory": false,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P1.11"],
+          "driveStrengthRequirement": "standard"
+        },
+                {
+          "name": "RADIO[3]",
+          "direction": "output",
+          "isMandatory": false,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P1.12"],
+          "driveStrengthRequirement": "standard"
+        },
+                {
+          "name": "RADIO[4]",
+          "direction": "output",
+          "isMandatory": false,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P1.13"],
+          "driveStrengthRequirement": "standard"
+        },
+                {
+          "name": "RADIO[5]",
+          "direction": "output",
+          "isMandatory": false,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P1.14"],
+          "driveStrengthRequirement": "standard"
+        },
+                {
+          "name": "RADIO[6]",
+          "direction": "output",
+          "isMandatory": false,
+          "requiresClockCapablePin": false,
+          "allowedGpio": ["P1.05"],
+          "driveStrengthRequirement": "standard"
+        }
+      ]
+    }
+  ]
+}

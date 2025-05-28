@@ -17,7 +17,7 @@ const peripherals = {
 		{ id: "TWIM/TWIS30", port: "Port 0", pins: "Any pins", notes: "SCL requires clock pin", address: "0x50104000" }
 	],
 	"UART": [
-		{ id: "UARTE00", port: "Port 2", pins: "Any pins", notes: "", address: "0x5004A000" },
+		{ id: "UARTE00", port: "Port 2", pins: "Dedicated pins only (P2.00, P2.02, P2.04, P2.05, P2.07, P2.08, P2.09, P2.10)", notes: "", address: "0x5004A000" },
 		{ id: "UARTE20", port: "Port 1 or Port 2", pins: "Any pins (P1) or dedicated pins (P2.00, P2.02, P2.04, P2.05)", notes: "", address: "0x500C6000" },
 		{ id: "UARTE21", port: "Port 1 or Port 2", pins: "Any pins (P1) or dedicated pins (P2.07, P2.08, P2.09, P2.10)", notes: "", address: "0x500C7000" },
 		{ id: "UARTE22", port: "Port 1 or Port 2", pins: "Any pins (P1) or dedicated pins (P2)", notes: "", address: "0x500C8000" },
@@ -240,6 +240,16 @@ let p2PeripheralPinRestrictions = {
 		"P2.10": "SPIM CS"
 	},
 	// UART peripherals
+	"UARTE00": {
+		"P2.00": "UARTE RXD",
+		"P2.02": "UARTE TXD",
+		"P2.04": "UARTE CTS",
+		"P2.05": "UARTE RTS",
+		"P2.07": "UARTE RXD",
+		"P2.08": "UARTE TXD",
+		"P2.09": "UARTE CTS",
+		"P2.10": "UARTE RTS"
+	},
 	"UARTE20": {
 		"P2.00": "UARTE RXD",
 		"P2.02": "UARTE TXD",

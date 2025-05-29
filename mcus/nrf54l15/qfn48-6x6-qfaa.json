@@ -4,7 +4,7 @@
     "partNumber": "nRF54L15-QFAA",
     "packageType": "QFN-48",
     "sizeDescription": "6x6x0.85mm, 0.4mm pitch QFN-48",
-    "datasheetVersion": "https://docs-be.nordicsemi.com/bundle/ps_nrf54L15/page/pdf/nRF54L15_nRF54L10_nRF54L05_Datasheet_v0.8.pdf"
+    "datasheetVersion": "https://docs-be.nordicsemi.com/bundle/ps_nrf54L15/page/pdf/nRF54L15_nRF54L10_nRF54L05_Preliminary_Datasheet_v0.9.pdf"
   },
   "renderConfig": {
     "canvasDefaults": {
@@ -54,7 +54,401 @@
   "pins": [
     {
         "packagePinId": "1",
-        "name": ""
+        "name": "P1.00",
+        "defaultType": "crystal_lf",
+        "isClockCapable": false,
+        "powerDomain": "peripheral",
+        "notes": "XL1, GPIO",
+        "side": "left"
+    },
+    {
+        "packagePinId": "2",
+        "name": "P1.01",
+        "defaultType": "crystal_lf",
+        "isClockCapable": false,
+        "powerDomain": "peripheral",
+        "notes": "XL2, GPIO",
+        "side": "left"
+    },
+    {
+        "packagePinId": "3",
+        "name": "P1.02",
+        "defaultType": "other_system",
+        "isClockCapable": false,
+        "powerDomain": "peripheral",
+        "notes": "NFC1, GPIO",
+        "side": "left"
+    },
+    {
+        "packagePinId": "4",
+        "name": "P1.03",
+        "defaultType": "other_system",
+        "isClockCapable": true,
+        "powerDomain": "peripheral",
+        "notes": "NFC2, GPIO",
+        "side": "left"
+    },
+    {
+        "packagePinId": "5",
+        "name": "P1.04",
+        "defaultType": "io",
+        "isClockCapable": true,
+        "powerDomain": "peripheral",
+        "notes": "AIN0, TAMPC[0] ASO, GPIO",
+        "side": "left"
+    },
+    {
+        "packagePinId": "6",
+        "name": "P1.05",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "peripheral",
+        "notes": "AIN1, RADIO[6], TAMPC[0] ASI, GPIO",
+        "side": "left"
+    },
+    {
+        "packagePinId": "7",
+        "name": "P1.06",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "peripheral",
+        "notes": "AIN2, TAMPC[1] ASO, GPIO",
+        "side": "left"
+    },
+    {
+        "packagePinId": "8",
+        "name": "P1.07",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "peripheral",
+        "notes": "AIN3, TAMPC[1] ASI, GPIO",
+        "side": "left"
+    },
+    {
+        "packagePinId": "9",
+        "name": "P1.08",
+        "defaultType": "io",
+        "isClockCapable": true,
+        "powerDomain": "peripheral",
+        "notes": "EXTREF, CLKOUTFAST, GPIO",
+        "side": "left"
+    },
+    {
+        "packagePinId": "10",
+        "name": "VDD",
+        "defaultType": "power_positive",
+        "notes": "VDD",
+        "side": "left"
+    },
+    {
+        "packagePinId": "11",
+        "name": "P2.00",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "mcu",
+        "notes": "SPIM/SPIS00, SPIM/SPIS20, UARTE00, UARTE20, FLPR, eQSPI (FLPR)",
+        "side": "left"
+    },
+    {
+        "packagePinId": "12",
+        "name": "P2.01",
+        "defaultType": "io",
+        "isClockCapable": true,
+        "powerDomain": "mcu",
+        "notes": "SPIM/SPIS00, SPIM/SPIS20, FLPR, eQSPI (FLPR)",
+        "side": "left"
+    },
+    {
+        "packagePinId": "13",
+        "name": "P2.02",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "mcu",
+        "notes": "SPIM/SPIS00, SPIM/SPIS20, UARTE00, UARTE20, FLPR, eQSPI (FLPR), SWO",
+        "side": "bottom"
+    },
+    {
+        "packagePinId": "14",
+        "name": "P2.03",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "mcu",
+        "notes": "FLPR, eQSPI (FLPR)",
+        "side": "bottom"
+    },
+    {
+        "packagePinId": "15",
+        "name": "P2.04",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "mcu",
+        "notes": "SPIM/SPIS00, SPIM/SPIS20, UARTE00, UARTE20, FLPR, eQSPI (FLPR)",
+        "side": "bottom"
+    },
+    {
+        "packagePinId": "16",
+        "name": "P2.05",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "mcu",
+        "notes": "SPIM/SPIS00, SPIM/SPIS20, UARTE00, UARTE20, FLPR, eQSPI (FLPR)",
+        "side": "bottom"
+    },
+    {
+        "packagePinId": "17",
+        "name": "P2.06",
+        "defaultType": "io",
+        "isClockCapable": true,
+        "powerDomain": "mcu",
+        "notes": "SPIM/SPIS00, SPIM/SPIS21, FLPR, TRACECLK",
+        "side": "bottom"
+    },
+    {
+        "packagePinId": "18",
+        "name": "P2.07",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "mcu",
+        "notes": "SPIM/SPIS00, SPIM/SPIS21, UARTE00, UARTE21, FLPR, SWO, TRACEDATA[0]",
+        "side": "bottom"
+    },
+    {
+        "packagePinId": "19",
+        "name": "P2.08",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "mcu",
+        "notes": "SPIM/SPIS00, SPIM/SPIS21, UARTE00, UARTE21, FLPR, TRACEDATA[1]",
+        "side": "bottom"
+    },
+    {
+        "packagePinId": "20",
+        "name": "P2.09",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "mcu",
+        "notes": "SPIM/SPIS00, SPIM/SPIS21, UARTE00, UARTE21, FLPR, TRACEDATA[2]",
+        "side": "bottom"
+    },
+    {
+        "packagePinId": "21",
+        "name": "P2.10",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "mcu",
+        "notes": "SPIM/SPIS00, SPIM/SPIS21, UARTE00, UARTE21, FLPR, TRACEDATA[3]",
+        "side": "bottom"
+    },
+    {
+        "packagePinId": "22",
+        "name": "VDD",
+        "defaultType": "power_positive",
+        "notes": "VDD",
+        "side": "bottom"
+    },
+    {
+        "packagePinId": "23",
+        "name": "P0.00",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "low_power",
+        "notes": "GPIOTE30",
+        "side": "right"
+    },
+    {
+        "packagePinId": "24",
+        "name": "P0.01",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "low_power",
+        "notes": "GPIOTE30",
+        "side": "right"
+    },
+    {
+        "packagePinId": "25",
+        "name": "SWDIO",
+        "defaultType": "debug",
+        "notes": "SWDIO",
+        "side": "right"
+    },
+    {
+        "packagePinId": "26",
+        "name": "SWDCLK",
+        "defaultType": "debug",
+        "notes": "SWDCLK",
+        "side": "right"
+    },
+    {
+        "packagePinId": "27",
+        "name": "P0.02",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "low_power",
+        "notes": "GPIOTE30",
+        "side": "right"
+    },
+    {
+        "packagePinId": "28",
+        "name": "P0.03",
+        "defaultType": "io",
+        "isClockCapable": true,
+        "powerDomain": "low_power",
+        "notes": "GPIOTE30, GRTC PWM",
+        "side": "right"
+    },
+    {
+        "packagePinId": "29",
+        "name": "P0.04",
+        "defaultType": "io",
+        "isClockCapable": true,
+        "powerDomain": "low_power",
+        "notes": "GPIOTE30, GRTC CLKOUT32K",
+        "side": "right"
+    },
+    {
+        "packagePinId": "30",
+        "name": "~{RESET}",
+        "defaultType": "debug",
+        "notes": "RESET active low",
+        "side": "right"
+    },
+    {
+        "packagePinId": "31",
+        "name": "ANT",
+        "defaultType": "rf_antenna",
+        "notes": "Radio antenna port",
+        "side": "right"
+    },
+    {
+        "packagePinId": "32",
+        "name": "VSS_PA",
+        "defaultType": "power_ground",
+        "notes": "RF ground",
+        "side": "right"
+    },
+    {
+        "packagePinId": "33",
+        "name": "DECRF",
+        "defaultType": "decoupling",
+        "notes": "RF decoupling",
+        "side": "right"
+    },
+    {
+        "packagePinId": "34",
+        "name": "XC1",
+        "defaultType": "crystal_hf",
+        "notes": "32 MHz input",
+        "side": "right"
+    },
+    {
+        "packagePinId": "35",
+        "name": "XC2",
+        "defaultType": "crystal_hf",
+        "notes": "32 MHz output",
+        "side": "right"
+    },
+    {
+        "packagePinId": "36",
+        "name": "VDD",
+        "defaultType": "power_positive",
+        "notes": "VDD",
+        "side": "right"
+    },
+    {
+        "packagePinId": "37",
+        "name": "P1.09",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "peripheral",
+        "notes": "RADIO[0], TAMPC[2] ASO, GPIO",
+        "side": "top"
+    },
+    {
+        "packagePinId": "38",
+        "name": "P1.10",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "peripheral",
+        "notes": "RADIO[1], TAMPC[2] ASI, GPIO",
+        "side": "top"
+    },
+    {
+        "packagePinId": "39",
+        "name": "P1.11",
+        "defaultType": "io",
+        "isClockCapable": true,
+        "powerDomain": "peripheral",
+        "notes": "RADIO[2], TAMPC[3] ASO, AIN4, GPIO",
+        "side": "top"
+    },
+    {
+        "packagePinId": "40",
+        "name": "P1.12",
+        "defaultType": "io",
+        "isClockCapable": true,
+        "powerDomain": "peripheral",
+        "notes": "RADIO[3], TAMPC[3] ASI, AIN5, GPIO",
+        "side": "top"
+    },
+    {
+        "packagePinId": "41",
+        "name": "P1.13",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "peripheral",
+        "notes": "RADIO[4], AIN6, GPIO",
+        "side": "top"
+    },
+    {
+        "packagePinId": "42",
+        "name": "P1.14",
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "peripheral",
+        "notes": "RADIO[5], AIN7, GPIO",
+        "side": "top"
+    },
+    {
+        "packagePinId": "43",
+        "name": "DECA",
+        "defaultType": "decoupling",
+        "notes": "0.9V regulator decoupling",
+        "side": "top"
+    },
+    {
+        "packagePinId": "44",
+        "name": "VSS",
+        "defaultType": "power_ground",
+        "notes": "Ground",
+        "side": "top"
+    },
+    {
+        "packagePinId": "45",
+        "name": "DECD",
+        "defaultType": "decoupling",
+        "notes": "0.9V regulator decoupling",
+        "side": "top"
+    },
+    {
+        "packagePinId": "46",
+        "name": "DCC",
+        "defaultType": "power_positive",
+        "notes": "DC/DC regulator output",
+        "side": "top"
+    },
+    {
+        "packagePinId": "47",
+        "name": "VDD",
+        "defaultType": "power_positive",
+        "notes": "Power supply",
+        "side": "top"
+    },
+    {
+        "packagePinId": "48",
+        "name": "VDD",
+        "defaultType": "power_positive",
+        "notes": "Power supply",
+        "side": "top"
     }
   ],
   "socPeripherals": [
@@ -67,47 +461,32 @@
         {
           "name": "SCK",
           "direction": "inout",
-          "isMandatory": true,
-          "requiresClockCapablePin": true,
           "allowedGpio": ["P2.01", "P2.06"],
-          "driveStrengthRequirement": "extra high",
-          "specialNotes": "N/A"
+          "driveStrengthRequirement": "extra high"
         },
         {
           "name": "SDO",
           "direction": "output",
-          "isMandatory": false,
-          "requiresClockCapablePin": false,
           "allowedGpio": ["P2.02", "P2.08"],
-          "driveStrengthRequirement": "extra high",
-          "specialNotes": "N/A"
+          "driveStrengthRequirement": "extra high"
         },
         {
           "name": "SDI",
           "direction": "input",
-          "isMandatory": false,
-          "requiresClockCapablePin": false,
           "allowedGpio": ["P2.04", "P2.09"],
-          "driveStrengthRequirement": "extra high",
-          "specialNotes": "N/A"
+          "driveStrengthRequirement": "extra high"
         },
         {
           "name": "CS",
           "direction": "inout",
-          "isMandatory": false,
-          "requiresClockCapablePin": false,
           "allowedGpio": ["P2.05", "P2.10"],
-          "driveStrengthRequirement": "extra high",
-          "specialNotes": "N/A"
+          "driveStrengthRequirement": "extra high"
         },
         {
           "name": "DCX",
           "direction": "output",
-          "isMandatory": false,
-          "requiresClockCapablePin": false,
           "allowedGpio": ["P2.00", "P2.07"],
-          "driveStrengthRequirement": "extra high",
-          "specialNotes": "N/A"
+          "driveStrengthRequirement": "extra high"
         }
       ]    
     },
@@ -121,37 +500,23 @@
           "name": "TXD",
           "direction": "output",
           "isMandatory": true,
-          "requiresClockCapablePin": false,
-          "allowedGpio": ["P2*"],
-          "driveStrengthRequirement": "standard",
-          "specialNotes": "N/A"
+          "allowedGpio": ["P2.02", "P2.08"]
         },
         {
           "name": "RXD",
           "direction": "input",
           "isMandatory": true,
-          "requiresClockCapablePin": false,
-          "allowedGpio": ["P2*"],
-          "driveStrengthRequirement": "standard",
-          "specialNotes": "N/A"
+          "allowedGpio": ["P2.00", "P2.07"]
         },
         {
           "name": "CTS",
           "direction": "output",
-          "isMandatory": false,
-          "requiresClockCapablePin": false,
-          "allowedGpio": ["P2*"],
-          "driveStrengthRequirement": "standard",
-          "specialNotes": "N/A"
+          "allowedGpio": ["P2.04", "P2.09"]
         },
         {
           "name": "RTS",
           "direction": "input",
-          "isMandatory": false,
-          "requiresClockCapablePin": false,
-          "allowedGpio": ["P2*"],
-          "driveStrengthRequirement": "standard",
-          "specialNotes": "N/A"
+          "allowedGpio": ["P2.05", "P2.10"]
         }
       ]
     },
@@ -164,58 +529,835 @@
         {
           "name": "RADIO[0]",
           "direction": "output",
-          "isMandatory": false,
-          "requiresClockCapablePin": false,
-          "allowedGpio": ["P1.09"],
-          "driveStrengthRequirement": "standard"
+          "allowedGpio": ["P1.09"]
         },
-                {
+        {
           "name": "RADIO[1]",
           "direction": "output",
-          "isMandatory": false,
-          "requiresClockCapablePin": false,
-          "allowedGpio": ["P1.10"],
-          "driveStrengthRequirement": "standard"
+          "allowedGpio": ["P1.10"]
         },
-                {
+        {
           "name": "RADIO[2]",
           "direction": "output",
-          "isMandatory": false,
-          "requiresClockCapablePin": false,
-          "allowedGpio": ["P1.11"],
-          "driveStrengthRequirement": "standard"
+          "allowedGpio": ["P1.11"]
         },
-                {
+        {
           "name": "RADIO[3]",
           "direction": "output",
-          "isMandatory": false,
-          "requiresClockCapablePin": false,
-          "allowedGpio": ["P1.12"],
-          "driveStrengthRequirement": "standard"
+          "allowedGpio": ["P1.12"]
         },
-                {
+        {
           "name": "RADIO[4]",
           "direction": "output",
-          "isMandatory": false,
-          "requiresClockCapablePin": false,
-          "allowedGpio": ["P1.13"],
-          "driveStrengthRequirement": "standard"
+          "allowedGpio": ["P1.13"]
         },
-                {
+        {
           "name": "RADIO[5]",
           "direction": "output",
-          "isMandatory": false,
-          "requiresClockCapablePin": false,
-          "allowedGpio": ["P1.14"],
-          "driveStrengthRequirement": "standard"
+          "allowedGpio": ["P1.14"]
         },
-                {
+        {
           "name": "RADIO[6]",
           "direction": "output",
-          "isMandatory": false,
-          "requiresClockCapablePin": false,
-          "allowedGpio": ["P1.05"],
-          "driveStrengthRequirement": "standard"
+          "allowedGpio": ["P1.05"]
+        }
+      ]
+    },
+    {
+      "id": "SPIM/SPIS20",
+      "type": "SPI",
+      "baseAddress": "0x400C6000",
+      "description": "Peripheral domain SPIM/SPIS20 for GPIO port 1 or specific pins on port 2",
+      "signals": [
+        {
+          "name": "SCK",
+          "direction": "inout",
+          "isMandatory": true,
+          "requiresClockCapablePin": true,
+          "allowedGpio": ["P1*", "P2.01"]
+        },
+        {
+          "name": "SDO",
+          "direction": "output",
+          "allowedGpio": ["P1*", "P2.02"]
+        },
+        {
+          "name": "SDI",
+          "direction": "input",
+          "allowedGpio": ["P1*", "P2.04"]
+        },
+        {
+          "name": "CS",
+          "direction": "inout",
+          "allowedGpio": ["P1*", "P2.05"]
+        },
+        {
+          "name": "DCX",
+          "direction": "output",
+          "allowedGpio": ["P1*", "P2.00"]
+        }
+      ]
+    },
+    {
+      "id": "TWIM/TWIS20",
+      "type": "TWI",
+      "baseAddress": "0x400C6000",
+      "description": "Peripheral domain TWIM/TWIS20 for GPIO port 1",
+      "signals": [
+        {
+          "name": "SCL",
+          "direction": "inout",
+          "isMandatory": true,
+          "requiresClockCapablePin": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "SDA",
+          "direction": "inout",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        }
+      ]
+    },
+    {
+      "id": "UARTE20",
+      "type": "UART",
+      "baseAddress": "0x400C6000",
+      "description": "Peripheral domain UARTE20 for GPIO port 1 or specific pins on port 2",
+      "signals": [
+        {
+          "name": "TXD",
+          "direction": "output",
+          "isMandatory": true,
+          "allowedGpio": ["P1*", "P2.02"]
+        },
+        {
+          "name": "RXD",
+          "direction": "input",
+          "isMandatory": true,
+          "allowedGpio": ["P1*", "P2.00"]
+        },
+        {
+          "name": "CTS",
+          "direction": "output",
+          "allowedGpio": ["P1*", "P2.04"]
+        },
+        {
+          "name": "RTS",
+          "direction": "input",
+          "allowedGpio": ["P1*", "P2.05"]
+        }
+      ]
+    },
+    {
+      "id": "SPIM/SPIS21",
+      "type": "SPI",
+      "baseAddress": "0x400C7000",
+      "description": "Peripheral domain SPIM/SPIS21 for GPIO port 1 or specific pins on port 2",
+      "signals": [
+        {
+          "name": "SCK",
+          "direction": "inout",
+          "isMandatory": true,
+          "requiresClockCapablePin": true,
+          "allowedGpio": ["P1*", "P2.06"]
+        },
+        {
+          "name": "SDO",
+          "direction": "output",
+          "allowedGpio": ["P1*", "P2.08"]
+        },
+        {
+          "name": "SDI",
+          "direction": "input",
+          "allowedGpio": ["P1*", "P2.09"]
+        },
+        {
+          "name": "CS",
+          "direction": "inout",
+          "allowedGpio": ["P1*", "P2.10"]
+        },
+        {
+          "name": "DCX",
+          "direction": "output",
+          "allowedGpio": ["P1*", "P2.07"]
+        }
+      ]
+    },
+    {
+      "id": "TWIM/TWIS21",
+      "type": "TWI",
+      "baseAddress": "0x400C7000",
+      "description": "Peripheral domain TWIM/TWIS21 for GPIO port 1",
+      "signals": [
+        {
+          "name": "SCL",
+          "direction": "inout",
+          "isMandatory": true,
+          "requiresClockCapablePin": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "SDA",
+          "direction": "inout",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        }
+      ]
+    },
+    {
+      "id": "UARTE21",
+      "type": "UART",
+      "baseAddress": "0x400C7000",
+      "description": "Peripheral domain UARTE21 for GPIO port 1 or specific pins on port 2",
+      "signals": [
+        {
+          "name": "TXD",
+          "direction": "output",
+          "isMandatory": true,
+          "allowedGpio": ["P1*", "P2.08"]
+        },
+        {
+          "name": "RXD",
+          "direction": "input",
+          "isMandatory": true,
+          "allowedGpio": ["P1*", "P2.07"]
+        },
+        {
+          "name": "CTS",
+          "direction": "output",
+          "allowedGpio": ["P1*", "P2.09"]
+        },
+        {
+          "name": "RTS",
+          "direction": "input",
+          "allowedGpio": ["P1*", "P2.10"]
+        }
+      ]
+    },
+    {
+      "id": "SPIM/SPIS22",
+      "type": "SPI",
+      "baseAddress": "0x400C8000",
+      "description": "Peripheral domain SPIM/SPIS22 for GPIO port 1",
+      "signals": [
+        {
+          "name": "SCK",
+          "direction": "inout",
+          "isMandatory": true,
+          "requiresClockCapablePin": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "SDO",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "SDI",
+          "direction": "input",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CS",
+          "direction": "inout",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "DCX",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        }
+      ]
+    },
+    {
+      "id": "TWIM/TWIS22",
+      "type": "TWI",
+      "baseAddress": "0x400C8000",
+      "description": "Peripheral domain TWIM/TWIS22 for GPIO port 1",
+      "signals": [
+        {
+          "name": "SCL",
+          "direction": "inout",
+          "isMandatory": true,
+          "requiresClockCapablePin": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "SDA",
+          "direction": "inout",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        }
+      ]
+    },
+    {
+      "id": "UARTE22",
+      "type": "UART",
+      "baseAddress": "0x400C8000",
+      "description": "Peripheral domain UARTE22 for GPIO port 1",
+      "signals": [
+        {
+          "name": "TXD",
+          "direction": "output",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "RXD",
+          "direction": "input",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CTS",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "RTS",
+          "direction": "input",
+          "allowedGpio": ["P1*"]
+        }
+      ]
+    },
+    {
+      "id": "PDM20",
+      "type": "PDM",
+      "baseAddress": "0x400D0000",
+      "description": "Peripheral domain PDM20 for GPIO port 1",
+      "signals": [
+        {
+          "name": "CLK",
+          "direction": "output",
+          "isMandatory": true,
+          "requiresClockCapablePin": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "DIN",
+          "direction": "input",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        }
+      ]
+    },
+    {
+      "id": "PDM21",
+      "type": "PDM",
+      "baseAddress": "0x400D1000",
+      "description": "Peripheral domain PDM21 for GPIO port 1",
+      "signals": [
+        {
+          "name": "CLK",
+          "direction": "output",
+          "isMandatory": true,
+          "requiresClockCapablePin": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "DIN",
+          "direction": "input",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        }
+      ]
+    },
+    {
+      "id": "PWM20",
+      "type": "PWM",
+      "baseAddress": "0x400D2000",
+      "description": "Peripheral domain PWM20 for GPIO port 1, 4 channels",
+      "signals": [
+        {
+          "name": "CHAN[0]",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[1]",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[2]",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[3]",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        }
+      ]
+    },
+    {
+      "id": "PWM21",
+      "type": "PWM",
+      "baseAddress": "0x400D3000",
+      "description": "Peripheral domain PWM21 for GPIO port 1, 4 channels",
+      "signals": [
+        {
+          "name": "CHAN[0]",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[1]",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[2]",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[3]",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        }
+      ]
+    },
+    {
+      "id": "PWM22",
+      "type": "PWM",
+      "baseAddress": "0x400D4000",
+      "description": "Peripheral domain PWM21 for GPIO port 1, 4 channels",
+      "signals": [
+        {
+          "name": "CHAN[0]",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[1]",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[2]",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[3]",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        }
+      ]
+    },
+    {
+      "id": "SAADC",
+      "type": "SAADC",
+      "baseAddress": "0x400D5000",
+      "description": "SAADC, 8 channels",
+      "signals": [
+        {
+          "name": "AIN0",
+          "direction": "analog_input",
+          "allowedGpio": ["P1.04"]
+        },
+        {
+          "name": "AIN1",
+          "direction": "analog_input",
+          "allowedGpio": ["P1.05"]
+        },
+        {
+          "name": "AIN2",
+          "direction": "analog_input",
+          "allowedGpio": ["P1.06"]
+        },
+        {
+          "name": "AIN3",
+          "direction": "analog_input",
+          "allowedGpio": ["P1.07"]
+        },
+        {
+          "name": "AIN4",
+          "direction": "analog_input",
+          "allowedGpio": ["P1.11"]
+        },
+        {
+          "name": "AIN5",
+          "direction": "analog_input",
+          "allowedGpio": ["P1.12"]
+        },
+        {
+          "name": "AIN6",
+          "direction": "analog_input",
+          "allowedGpio": ["P1.13"]
+        },
+        {
+          "name": "AIN7",
+          "direction": "analog_input",
+          "allowedGpio": ["P1.14"]
+        },
+        {
+          "name": "EXTREF",
+          "direction": "analog_input",
+          "allowedGpio": ["P1.08"]
+        }
+      ]
+    },
+    {
+      "id": "NFCT",
+      "type": "NFCT",
+      "baseAddress": "0x400D6000",
+      "description": "NFC active tag",
+      "signals": [
+        {
+          "name": "NFC1",
+          "direction": "input",
+          "allowedGpio": ["P1.02"]
+        },
+        {
+          "name": "NFC2",
+          "direction": "input",
+          "allowedGpio": ["P1.03"]
+        }
+      ]
+    },
+    {
+      "id": "GPIOTE20",
+      "type": "GPIOTE",
+      "baseAddress": "0x400DA000",
+      "description": "GPIOE20 tasks and interrupts, 8 channel",
+      "signals": [
+        {
+          "name": "CHAN[0]",
+          "direction": "inout",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[1]",
+          "direction": "inout",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[2]",
+          "direction": "inout",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[3]",
+          "direction": "inout",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[4]",
+          "direction": "inout",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[5]",
+          "direction": "inout",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[6]",
+          "direction": "inout",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CHAN[7]",
+          "direction": "inout",
+          "allowedGpio": ["P1*"]
+        }
+      ]
+    },
+    {
+      "id": "TAMPC",
+      "type": "TAMPC",
+      "baseAddress": "0x500DC000",
+      "description": "Tamper Controller",
+      "signals": [
+        {
+          "name": "ASO[0]",
+          "direction": "output",
+          "allowedGpio": ["P1.04"]
+        },
+        {
+          "name": "ASI[0]",
+          "direction": "output",
+          "allowedGpio": ["P1.05"]
+        },
+        {
+          "name": "ASO[1]",
+          "direction": "output",
+          "allowedGpio": ["P1.06"]
+        },
+        {
+          "name": "ASI[1]",
+          "direction": "output",
+          "allowedGpio": ["P1.07"]
+        },
+        {
+          "name": "ASO[2]",
+          "direction": "output",
+          "allowedGpio": ["P1.09"]
+        },
+        {
+          "name": "ASI[2]",
+          "direction": "output",
+          "allowedGpio": ["P1.10"]
+        },
+        {
+          "name": "ASO[3]",
+          "direction": "output",
+          "allowedGpio": ["P1.11"]
+        },
+        {
+          "name": "ASI[3]",
+          "direction": "output",
+          "allowedGpio": ["P1.12"]
+        }
+      ]
+    },
+    {
+      "id": "I2S20",
+      "type": "I2S",
+      "baseAddress": "0x400DD000",
+      "description": "Peripheral domain I2S20 for GPIO port 1",
+      "signals": [
+        {
+          "name": "SCK",
+          "direction": "output",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"],
+          "requiresClockCapablePin": true
+        },
+        {
+          "name": "LRCK",
+          "direction": "output",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "SDIN",
+          "direction": "input",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "SDOUT",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "MCK",
+          "direction": "output",
+          "allowedGpio": ["P1*"],
+          "requiresClockCapablePin": true
+        }
+      ]
+    },
+    {
+      "id": "QDEC20",
+      "type": "QDEC",
+      "baseAddress": "0x400E0000",
+      "description": "Peripheral domain QDEC20 for GPIO port 1",
+      "signals": [
+        {
+          "name": "A",
+          "direction": "input",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "B",
+          "direction": "input",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "LED",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        }
+      ]  
+    },
+    {
+      "id": "QDEC21",
+      "type": "QDEC",
+      "baseAddress": "0x400E1000",
+      "description": "Peripheral domain QDEC21 for GPIO port 1",
+      "signals": [
+        {
+          "name": "A",
+          "direction": "input",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "B",
+          "direction": "input",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "LED",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        }
+      ]  
+    },
+    {
+      "id": "GRTC",
+      "type": "GRTC",
+      "baseAddress": "0x400E2000",
+      "description": "Global Real-time Clock",
+      "signals": [
+        {
+          "name": "PWM",
+          "direction": "output",
+          "allowedGpio": ["P0.03"]
+        },
+        {
+          "name": "LFCLKOUT",
+          "direction": "output",
+          "requiresClockCapablePin": true,
+          "allowedGpio": ["P0.04"]
+        },
+        {
+          "name": "CLK16M",
+          "direction": "output",
+          "requiresClockCapablePin": true,
+          "allowedGpio": ["P1.08"]
+        }
+      ]
+    },
+    {
+      "id": "SPIM/SPIS30",
+      "type": "SPI",
+      "baseAddress": "0x40104000",
+      "description": "Peripheral domain SPIM/SPIS30 for GPIO port 0",
+      "signals": [
+        {
+          "name": "SCK",
+          "direction": "inout",
+          "isMandatory": true,
+          "requiresClockCapablePin": true,
+          "allowedGpio": ["P0*"]
+        },
+        {
+          "name": "SDO",
+          "direction": "output",
+          "allowedGpio": ["P0*"]
+        },
+        {
+          "name": "SDI",
+          "direction": "input",
+          "allowedGpio": ["P0*"]
+        },
+        {
+          "name": "CS",
+          "direction": "inout",
+          "allowedGpio": ["P0*"]
+        },
+        {
+          "name": "DCX",
+          "direction": "output",
+          "allowedGpio": ["P0*"]
+        }
+      ]
+    },
+    {
+      "id": "TWIM/TWIS30",
+      "type": "TWI",
+      "baseAddress": "0x40104000",
+      "description": "Peripheral domain TWIM/TWIS30 for GPIO port 0",
+      "signals": [
+        {
+          "name": "SCL",
+          "direction": "inout",
+          "isMandatory": true,
+          "requiresClockCapablePin": true,
+          "allowedGpio": ["P0*"]
+        },
+        {
+          "name": "SDA",
+          "direction": "inout",
+          "isMandatory": true,
+          "allowedGpio": ["P0*"]
+        }
+      ]
+    },
+    {
+      "id": "UARTE30",
+      "type": "UART",
+      "baseAddress": "0x40104000",
+      "description": "Peripheral domain UARTE30 for GPIO port 0",
+      "signals": [
+        {
+          "name": "TXD",
+          "direction": "output",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "RXD",
+          "direction": "input",
+          "isMandatory": true,
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "CTS",
+          "direction": "output",
+          "allowedGpio": ["P1*"]
+        },
+        {
+          "name": "RTS",
+          "direction": "input",
+          "allowedGpio": ["P1*"]
+        }
+      ]
+    },
+    {
+      "id": "GPIOTE30",
+      "type": "GPIOTE",
+      "baseAddress": "0x4010C000",
+      "description": "GPIOE30 tasks and interrupts, 4 channel",
+      "signals": [
+        {
+          "name": "CHAN[0]",
+          "direction": "inout",
+          "allowedGpio": ["P0*"]
+        },
+        {
+          "name": "CHAN[1]",
+          "direction": "inout",
+          "allowedGpio": ["P0*"]
+        },
+        {
+          "name": "CHAN[2]",
+          "direction": "inout",
+          "allowedGpio": ["P0*"]
+        },
+        {
+          "name": "CHAN[3]",
+          "direction": "inout",
+          "allowedGpio": ["P0*"]
+        }
+      ]
+    },
+    {
+      "id": "OSCILLATORS",
+      "type": "OSCILLATORS",
+      "baseAddress": "0x40120000",
+      "description": "Oscillator control",
+      "signals": [
+        {
+          "name": "XL1",
+          "direction": "input",
+          "allowedGpio": ["P1.00"],
+          "isMandatory": true
+        },
+        {
+          "name": "XL2",
+          "direction": "input",
+          "allowedGpio": ["P1.01"],
+          "isMandatory": true
         }
       ]
     }

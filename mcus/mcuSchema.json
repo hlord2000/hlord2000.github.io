@@ -140,13 +140,8 @@
                   "description": "Any special considerations for this signal (e.g., 'Pull-up recommended', 'Requires external components')."
                 }
               },
-              "required": ["name", "direction", "isMandatory"]
+              "required": ["name", "direction"]
             }
-          },
-          "instanceSpecificConfig": {
-            "type": "object",
-            "description": "Configuration options specific to this peripheral instance (e.g., number of channels for GPIOTE, resolution for ADC).",
-            "additionalProperties": true
           }
         },
         "required": ["id", "type", "signals"]
@@ -160,10 +155,9 @@
         "properties": {
           "packagePinId": { "type": "string", "description": "Unique physical identifier on the package (e.g., '1', '48', 'A1', 'G7')." },
           "name": { "type": "string", "description": "Logical SoC signal name (e.g., 'P0.01', 'VDD', 'NC')." },
-          "type": { "enum": ["io", "power_positive", "power_ground", "analog_special", "debug", "reset", "crystal_hf", "crystal_lf", "rf_antenna", "rf_control", "decoupling", "nc", "other_system"], "description": "Primary classification." },
+          "defaultType": { "enum": ["io", "power_positive", "power_ground", "analog_special", "debug", "reset", "crystal_hf", "crystal_lf", "rf_antenna", "rf_control", "decoupling", "nc", "other_system"], "description": "Primary classification." },
           "isClockCapable": { "type": "boolean", "default": false },
-          "socFunctions": { "type": "array", "items": { "type": "string" }, "description": "SoC-level functions of the die pad." },
-          "supplyDomain": { "type": "string" },
+          "powerDomain": { "type": "string" },
           "notes": { "type": "string" },
           "renderOrder": { "type": "integer", "description": "For perimeter layouts, the sequential drawing order if 'packagePinId' is not numeric/sequential." },
           "side": { "enum": ["top", "bottom", "left", "right"], "description": "For perimeter layouts, which side the pin is on." },
@@ -179,7 +173,7 @@
           "strokeColor": { "type": "string", "format": "color" },
           "strokeWidth": { "type": "number" }
         },
-        "required": ["packagePinId", "name", "type"]
+        "required": ["packagePinId", "name", "defaultType"]
       }
     },
     "peripheralPinMappings": {

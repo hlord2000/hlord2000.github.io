@@ -175,42 +175,6 @@
         },
         "required": ["packagePinId", "name", "defaultType"]
       }
-    },
-    "peripheralPinMappings": {
-      "type": "array",
-      "description": "Defines how SoC peripherals map to pins on this specific package.",
-      "items": {
-        "type": "object",
-        "properties": {
-          "socPeripheralId": { "type": "string", "description": "Must match an 'id' from the 'socPeripherals' list." },
-          "packageAvailability": { "enum": ["fully_available", "restricted", "not_available"], "default": "fully_available" },
-          "functions": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "functionName": { "type": "string" },
-                "allowablePackagePinIds": { "type": "array", "items": { "type": "string" } },
-                "defaultPackagePinId": { "type": "string" },
-                "rules": { "type": "array", "items": { "type": "object", "properties": { "condition": { "type": "string" }, "constraint": { "type": "string" }}}}
-              }, "required": ["functionName", "allowablePackagePinIds"]
-            }
-          }, "notes": { "type": "string" }
-        }, "required": ["socPeripheralId", "packageAvailability"]
-      }
-    },
-    "systemPins": {
-      "type": "array",
-      "description": "Pins with fixed, system-level functions critical for this package's operation.",
-      "items": {
-        "type": "object",
-        "properties": {
-          "feature": { "type": "string" },
-          "packagePinId": { "type": "string" },
-          "role": { "type": "string" },
-          "isMandatory": { "type": "boolean", "default": true }
-        }, "required": ["feature", "packagePinId", "role"]
-      }
     }
   },
   "required": ["partInfo", "renderConfig", "pins"],

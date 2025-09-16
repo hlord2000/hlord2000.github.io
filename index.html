@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<!-- Google tag (gtag.js) -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-NME89B10ME"></script>
 	<script>
 	  window.dataLayer = window.dataLayer || [];
@@ -690,7 +689,6 @@
             </div>
         </div>
         
-        <!-- Package Selection Dropdown -->
         <div class="package-selector">
             <h3>Package Selection</h3>
             <select id="packageSelector">
@@ -704,7 +702,6 @@
                 <h2>Available Peripherals</h2>
                 <input type="text" id="searchPeripherals" class="search-box" placeholder="Search peripherals...">
                 
-                <!-- Optional Simple Peripherals Section -->
                 <div class="simple-peripherals">
                     <h3>Pin Specific Peripherals</h3>
                     <div class="checkbox-group">
@@ -723,20 +720,16 @@
                     </div>
                 </div>
                 
-                <!-- Single-instance peripherals section -->
                 <div class="peripherals-section">
                     <div class="peripherals-heading">Single-Instance Peripherals</div>
                     <div id="single-peripherals-container">
-                        <!-- Will be filled dynamically -->
-                    </div>
+                        </div>
                 </div>
                 
-                <!-- Multiple-instance peripherals accordion section -->
                 <div class="peripherals-section">
                     <div class="peripherals-heading">Multiple-Instance Peripherals</div>
                     <div class="accordion" id="peripheralAccordion">
-                        <!-- Will be filled dynamically with multi-instance peripherals -->
-                    </div>
+                        </div>
                 </div>
             </div>
 
@@ -793,7 +786,6 @@
         </div>
     </div>
     
-    <!-- Import Configuration Modal -->
     <div id="importModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -825,7 +817,6 @@
         </div>
     </div>
     
-    <!-- Pin Selection Modal -->
     <div id="pinSelectionModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -847,8 +838,7 @@
                         </tr>
                     </thead>
                     <tbody id="pinSelectionTableBody">
-                        <!-- Will be filled dynamically -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
             <div class="modal-footer">
@@ -861,6 +851,9 @@
     <script>
         // Data structures
         const peripherals = {
+            "sQSPI": [
+                { id: "sQSPI", port: "Port 2", pins: "P2.00-P2.05", notes: "Software emulated QSPI on dedicated pins.", address: "N/A" }
+            ],
             "SPI": [
                 { id: "SPIM/SPIS00", port: "Port 2", pins: "Dedicated pins only (P2.00, P2.01, P2.02, P2.04, P2.05)", notes: "SCLK requires clock pin; 32MHz requires high drive low and high", address: "0x5004A000" },
                 { id: "SPIM/SPIS20", port: "Port 1 or Port 2", pins: "Any pins (P1) or dedicated pins (P2.00, P2.01, P2.02, P2.04, P2.05)", notes: "SCLK requires clock pin", address: "0x500C6000" },
@@ -924,7 +917,7 @@
             { number: 13, name: "P2.02", isClock: false, port: "P2", index: 2, type: "io", functions: ["Digital I/O", "SPIM SDO", "SPIS SDO", "UARTE TXD", "QSPI D0", "Serial wire output (SWO)"] },
             { number: 14, name: "P2.03", isClock: false, port: "P2", index: 3, type: "io", functions: ["Digital I/O", "QSPI D2"] },
             { number: 15, name: "P2.04", isClock: false, port: "P2", index: 4, type: "io", functions: ["Digital I/O", "SPIM SDI", "SPIS SDI", "UARTE CTS", "QSPI D1"] },
-            { number: 16, name: "P2.05", isClock: false, port: "P2", index: 5, type: "io", functions: ["Digital I/O", "SPIM CS", "UARTE RTS", "QSPI CS"] },
+            { number: 16, name: "P2.05", isClock: false, port: "P2", index: 5, type: "io", functions: ["Digital I/O", "SPIM CS", "UARTE RTS", "QSPI CS", "QSPI CSN"] },
             { number: 17, name: "P2.06", isClock: true, port: "P2", index: 6, type: "io", functions: ["TRACECLK", "Digital I/O", "SPIM SCK", "SPIS SCK", "Trace clock"] },
             { number: 18, name: "P2.07", isClock: false, port: "P2", index: 7, type: "io", functions: ["TRACEDATA[0]", "SWO", "Digital I/O", "Trace data", "Serial wire output (SWO)", "SPIM DCX", "UARTE RXD"] },
             { number: 19, name: "P2.08", isClock: false, port: "P2", index: 8, type: "io", functions: ["TRACEDATA[1]", "Digital I/O", "Trace data", "SPIM SDO", "SPIS SDO", "UARTE TXD"] },
@@ -961,6 +954,14 @@
 
         // Define peripheral functions required for each peripheral type
         const peripheralFunctions = {
+            "sQSPI": [
+                { name: "QSPI SCK", description: "QSPI Serial Clock", required: true, requiresClock: true, specificPin: "P2.01" },
+                { name: "QSPI CSN", description: "QSPI Chip Select", required: true, requiresClock: false, specificPin: "P2.05" },
+                { name: "QSPI D0", description: "QSPI Data 0 (MOSI)", required: true, requiresClock: false, specificPin: "P2.02" },
+                { name: "QSPI D1", description: "QSPI Data 1 (MISO)", required: true, requiresClock: false, specificPin: "P2.04" },
+                { name: "QSPI D2", description: "QSPI Data 2", required: true, requiresClock: false, specificPin: "P2.03" },
+                { name: "QSPI D3", description: "QSPI Data 3", required: true, requiresClock: false, specificPin: "P2.00" }
+            ],
             "SPI": [
                 { name: "SPIM SCK", description: "SPI Clock", required: true, requiresClock: true },
                 { name: "SPIM SDO", description: "SPI MOSI (Master Out, Slave In)", required: true, requiresClock: false },
@@ -1210,6 +1211,8 @@
                 baseName = 'QDEC';
             } else if (baseName.includes('NFCT')) {
                 baseName = 'NFCT';
+            } else if (baseName.includes('sQSPI')) {
+                baseName = 'sQSPI';
             }
             
             // Return the functions for this peripheral type
@@ -1226,6 +1229,8 @@
                 baseName = 'I2C';
             } else if (category.includes('UART')) {
                 baseName = 'UART';
+            } else if (category.includes('sQSPI')) {
+                baseName = 'sQSPI';
             }
             
             // Look up the function in the peripheralFunctions
@@ -1353,7 +1358,7 @@
                         if (isSelected) {
                             // Open for editing
                             editPeripheral(peripheral.id);
-                        } else {
+                        } else if (!this.classList.contains('disabled')) {
                             // Check for address conflicts
                             if (hasAddressConflict(peripheral)) {
                                 alert(`Cannot select ${peripheral.id} because it shares the same address space (${peripheral.address}) with another selected peripheral.`);
@@ -2710,10 +2715,14 @@
                             checkbox.value = pin.name;
                             checkbox.dataset.function = func.name;
                             
-                            // Check if pin is already used
+                            // Check if pin is already used or if the function is required
                             const isPinUsed = !!usedPins[pin.name];
-                            if (isPinUsed) {
+                            if (isPinUsed || func.required) {
                                 checkbox.disabled = true;
+                            }
+                            if (func.required) {
+                                checkbox.checked = true;
+                                tempSelectedPins[pin.name] = func.name; // Assign immediately
                             }
                             
                             // Add change event
@@ -2765,6 +2774,7 @@
                             // If function is required, check by default
                             if (func.required) {
                                 checkbox.checked = true;
+                                checkbox.disabled = true;
                                 tempSelectedPins[pin.name] = func.name;
                             }
                             
@@ -3124,8 +3134,8 @@
                 }
             });
             
-            // Update peripheral UI based on address conflicts
-            updatePeripheralUIForAddressConflicts();
+            // Update available peripheral UI based on conflicts
+            updatePeripheralUI();
         }
         
         // Highlight pins used by a peripheral
@@ -3149,63 +3159,75 @@
             });
         }
         
-        // Update peripheral UI to disable items with address conflicts
-        function updatePeripheralUIForAddressConflicts() {
+        // Update peripheral UI to disable items with conflicts
+        function updatePeripheralUI() {
+            // Helper function to process each peripheral item (buttons and list items)
+            const processItem = (item, peripheralData, category) => {
+                // Check if this peripheral is already selected
+                const isSelected = selectedPeripherals.some(p => p.id === peripheralData.id);
+                
+                if (isSelected) {
+                    item.classList.add('selected');
+                    item.classList.remove('disabled');
+                    item.title = 'Selected. Click to edit.';
+                    return; // Skip further checks if it's already selected
+                } else {
+                    item.classList.remove('selected');
+                }
+        
+                // 1. Check for address conflicts
+                const addressConflict = hasAddressConflict(peripheralData);
+                if (addressConflict) {
+                    item.classList.add('disabled');
+                    item.title = `Cannot select: shares address space ${peripheralData.address} with ${usedAddresses[peripheralData.address]}`;
+                    return; // Stop here if there's an address conflict
+                }
+        
+                // 2. Check for pin conflicts (for fixed-pin peripherals)
+                const functions = getPeripheralFunctions(category, peripheralData);
+                const isFixedPin = functions.length > 0 && functions.every(f => f.specificPin && f.required);
+        
+                if (isFixedPin) {
+                    const conflictingPins = [];
+                    functions.forEach(f => {
+                        if (usedPins[f.specificPin]) {
+                            conflictingPins.push(f.specificPin);
+                        }
+                    });
+        
+                    if (conflictingPins.length > 0) {
+                        item.classList.add('disabled');
+                        item.title = `Cannot select: required pin(s) ${conflictingPins.join(', ')} are in use.`;
+                        return; // Stop here if there's a pin conflict
+                    }
+                }
+        
+                // If no conflicts, ensure the item is enabled
+                item.classList.remove('disabled');
+                item.title = '';
+            };
+        
             // Update single-instance peripherals
             document.querySelectorAll('#single-peripherals-container .single-peripheral-btn').forEach(btn => {
                 const peripheralId = btn.dataset.id;
                 const category = btn.dataset.category;
-                
-                // Find the peripheral data
                 const peripheralData = peripherals[category]?.find(p => p.id === peripheralId);
-                if (!peripheralData) return;
-                
-                // Check if this peripheral is already selected
-                const isSelected = btn.classList.contains('selected');
-                
-                // If not selected, check for address conflicts
-                if (!isSelected) {
-                    const hasConflict = hasAddressConflict(peripheralData);
-                    
-                    // Update UI based on conflict status
-                    if (hasConflict) {
-                        btn.classList.add('disabled');
-                        btn.title = `Cannot select: shares address space ${peripheralData.address} with ${usedAddresses[peripheralData.address]}`;
-                    } else {
-                        btn.classList.remove('disabled');
-                        btn.title = '';
-                    }
+                if (peripheralData) {
+                    processItem(btn, peripheralData, category);
                 }
             });
-            
+        
             // Update multi-instance peripherals
             document.querySelectorAll('.peripheral-item').forEach(item => {
                 const peripheralId = item.dataset.id;
                 const category = item.dataset.category;
-                
-                // Find the peripheral data
                 const peripheralData = peripherals[category]?.find(p => p.id === peripheralId);
-                if (!peripheralData) return;
-                
-                // Check if this peripheral is already selected
-                const isSelected = item.classList.contains('selected');
-                
-                // If not selected, check for address conflicts
-                if (!isSelected) {
-                    const hasConflict = hasAddressConflict(peripheralData);
-                    
-                    // Update UI based on conflict status
-                    if (hasConflict) {
-                        item.classList.add('disabled');
-                        item.title = `Cannot select: shares address space ${peripheralData.address} with ${usedAddresses[peripheralData.address]}`;
-                    } else {
-                        item.classList.remove('disabled');
-                        item.title = '';
-                    }
+                if (peripheralData) {
+                    processItem(item, peripheralData, category);
                 }
             });
         }
-        
+
         // Highlight the peripheral that uses a specific pin
         function highlightPeripheralByPin(pinName) {
             // Remove any existing highlights first

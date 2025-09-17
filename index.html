@@ -33,13 +33,25 @@
             </div>
         </div>
         
-        <!-- Package Selection Dropdown -->
         <div class="package-selector">
-            <h3>Package Selection</h3>
-            <select id="packageSelector">
-                <option value="QFN-48" selected>QFN-48</option>
-                <option value="WLCSP" disabled>WLCSP (Coming Soon)</option>
-            </select>
+            <h3>MCU and Package Selection</h3>
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <div>
+                    <label for="mcuSelector" style="display: block; margin-bottom: 5px;">MCU</label>
+                    <select id="mcuSelector">
+                        <option value="nrf54l15" selected>nRF54L15</option>
+                        <option value="nrf54l10">nRF54L10</option>
+                        <option value="nrf54l05">nRF54L05</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="packageSelector" style="display: block; margin-bottom: 5px;">Package</label>
+                    <select id="packageSelector">
+                        <option value="qfn48-6x6-qfaa" selected>QFN-48 (6x6)</option>
+                        <option value="qfn40-5x5-qfaa" disabled>QFN-40 (5x5) (Coming Soon)</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
         <div class="flex-container">

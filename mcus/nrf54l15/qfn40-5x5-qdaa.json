@@ -1,9 +1,9 @@
 {
   "$schema": "../mcuSchema.json",
   "partInfo": {
-    "partNumber": "nRF54L15-QFAA",
-    "packageType": "QFN-48",
-    "sizeDescription": "6x6x0.85mm, 0.4mm pitch QFN-48",
+    "partNumber": "nRF54L15-QDAA",
+    "packageType": "QFN-40",
+    "sizeDescription": "5x5x0.85mm, 0.4mm pitch QFN-40",
     "datasheetVersion": "https://docs-be.nordicsemi.com/bundle/ps_nrf54L15/page/pdf/nRF54L15_nRF54L10_nRF54L05_Preliminary_Datasheet_v0.9.pdf"
   },
   "renderConfig": {
@@ -11,8 +11,8 @@
         "padding": 20
     },
     "chipBody": {
-        "width": 6,
-        "height": 6,
+        "width": 5,
+        "height": 5,
         "centerX": 0,
         "centerY": 0,
         "cornerRadius": 0.3,
@@ -29,10 +29,10 @@
     "layoutStrategy": {
         "layoutType": "quadPerimeter",
         "pinCounts": {
-            "bottom": 12,
-            "left": 12,
-            "right": 12,
-            "top": 12
+            "bottom": 10,
+            "left": 10,
+            "right": 10,
+            "top": 10
         },
         "numberingStart": {
             "corner": "topLeft",
@@ -131,20 +131,9 @@
     },
     {
         "packagePinId": "8",
-        "name": "P1.07",
-        "port": "P1",
-        "pinIndex": 7,
-        "defaultType": "io",
-        "isClockCapable": false,
-        "powerDomain": "peripheral",
-        "functions": ["ASI[1]", "AIN3", "Digital I/O", "TAMPC active shield 1 input", "Analog input"],
-        "side": "left"
-    },
-    {
-        "packagePinId": "9",
         "name": "P1.08",
         "port": "P1",
-        "pinIndex": 8,
+        "pinIndex": 7,
         "defaultType": "io",
         "isClockCapable": true,
         "powerDomain": "peripheral",
@@ -152,7 +141,7 @@
         "side": "left"
     },
     {
-        "packagePinId": "10",
+        "packagePinId": "9",
         "name": "VDD",
         "port": null,
         "pinIndex": null,
@@ -162,7 +151,7 @@
         "side": "left"
     },
     {
-        "packagePinId": "11",
+        "packagePinId": "10",
         "name": "P2.00",
         "port": "P2",
         "pinIndex": 0,
@@ -173,7 +162,7 @@
         "side": "left"
     },
     {
-        "packagePinId": "12",
+        "packagePinId": "11",
         "name": "P2.01",
         "port": "P2",
         "pinIndex": 1,
@@ -181,10 +170,10 @@
         "isClockCapable": true,
         "powerDomain": "mcu",
         "functions": ["Digital I/O", "SPIM SCK", "SPIS SCK", "QSPI SCK"],
-        "side": "left"
+        "side": "bottom"
     },
     {
-        "packagePinId": "13",
+        "packagePinId": "12",
         "name": "P2.02",
         "port": "P2",
         "pinIndex": 2,
@@ -195,7 +184,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "14",
+        "packagePinId": "13",
         "name": "P2.03",
         "port": "P2",
         "pinIndex": 3,
@@ -206,7 +195,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "15",
+        "packagePinId": "14",
         "name": "P2.04",
         "port": "P2",
         "pinIndex": 4,
@@ -217,7 +206,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "16",
+        "packagePinId": "15",
         "name": "P2.05",
         "port": "P2",
         "pinIndex": 5,
@@ -228,7 +217,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "17",
+        "packagePinId": "16",
         "name": "P2.06",
         "port": "P2",
         "pinIndex": 6,
@@ -239,7 +228,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "18",
+        "packagePinId": "17",
         "name": "P2.07",
         "port": "P2",
         "pinIndex": 7,
@@ -250,7 +239,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "19",
+        "packagePinId": "18",
         "name": "P2.08",
         "port": "P2",
         "pinIndex": 8,
@@ -261,29 +250,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "20",
-        "name": "P2.09",
-        "port": "P2",
-        "pinIndex": 9,
-        "defaultType": "io",
-        "isClockCapable": false,
-        "powerDomain": "mcu",
-        "functions": ["TRACEDATA[2]", "Digital I/O", "Trace data", "SPIM SDI", "SPIS SDI", "UARTE CTS"],
-        "side": "bottom"
-    },
-    {
-        "packagePinId": "21",
-        "name": "P2.10",
-        "port": "P2",
-        "pinIndex": 10,
-        "defaultType": "io",
-        "isClockCapable": false,
-        "powerDomain": "mcu",
-        "functions": ["TRACEDATA[3]", "Digital I/O", "Trace data", "SPIM CS", "UARTE RTS"],
-        "side": "bottom"
-    },
-    {
-        "packagePinId": "22",
+        "packagePinId": "19",
         "name": "VDD",
         "port": null,
         "pinIndex": null,
@@ -293,7 +260,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "23",
+        "packagePinId": "20",
         "name": "P0.00",
         "port": "P0",
         "pinIndex": 0,
@@ -304,7 +271,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "24",
+        "packagePinId": "21",
         "name": "P0.01",
         "port": "P0",
         "pinIndex": 1,
@@ -312,10 +279,10 @@
         "isClockCapable": false,
         "powerDomain": "low_power",
         "functions": ["Digital I/O"],
-        "side": "bottom"
+        "side": "right"
     },
     {
-        "packagePinId": "25",
+        "packagePinId": "22",
         "name": "SWDIO",
         "port": null,
         "pinIndex": null,
@@ -325,7 +292,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "26",
+        "packagePinId": "23",
         "name": "SWDCLK",
         "port": null,
         "pinIndex": null,
@@ -335,29 +302,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "27",
-        "name": "P0.02",
-        "port": "P0",
-        "pinIndex": 2,
-        "defaultType": "io",
-        "isClockCapable": false,
-        "powerDomain": "low_power",
-        "functions": ["Digital I/O"],
-        "side": "right"
-    },
-    {
-        "packagePinId": "28",
-        "name": "P0.03",
-        "port": "P0",
-        "pinIndex": 3,
-        "defaultType": "io",
-        "isClockCapable": true,
-        "powerDomain": "low_power",
-        "functions": ["GRTCPWM", "Digital I/O", "GRTC PWM output"],
-        "side": "right"
-    },
-    {
-        "packagePinId": "29",
+        "packagePinId": "24",
         "name": "P0.04",
         "port": "P0",
         "pinIndex": 4,
@@ -368,7 +313,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "30",
+        "packagePinId": "25",
         "name": "~{RESET}",
         "port": null,
         "pinIndex": null,
@@ -378,7 +323,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "31",
+        "packagePinId": "26",
         "name": "ANT",
         "port": null,
         "pinIndex": null,
@@ -388,7 +333,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "32",
+        "packagePinId": "27",
         "name": "VSS_PA",
         "port": null,
         "pinIndex": null,
@@ -398,7 +343,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "33",
+        "packagePinId": "28",
         "name": "DECRF",
         "port": null,
         "pinIndex": null,
@@ -408,7 +353,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "34",
+        "packagePinId": "29",
         "name": "XC1",
         "port": null,
         "pinIndex": null,
@@ -418,7 +363,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "35",
+        "packagePinId": "30",
         "name": "XC2",
         "port": null,
         "pinIndex": null,
@@ -428,7 +373,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "36",
+        "packagePinId": "31",
         "name": "VDD",
         "port": null,
         "pinIndex": null,
@@ -438,29 +383,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "37",
-        "name": "P1.09",
-        "port": "P1",
-        "pinIndex": 9,
-        "defaultType": "io",
-        "isClockCapable": false,
-        "powerDomain": "peripheral",
-        "functions": ["ASO[2]", "RADIO[0]", "Digital I/O", "TAMPC active shield 2 output", "RADIO DFEGPIO"],
-        "side": "top"
-    },
-    {
-        "packagePinId": "38",
-        "name": "P1.10",
-        "port": "P1",
-        "pinIndex": 10,
-        "defaultType": "io",
-        "isClockCapable": false,
-        "powerDomain": "peripheral",
-        "functions": ["ASI[2]", "RADIO[1]", "Digital I/O", "TAMPC active shield 2 input", "RADIO DFEGPIO"],
-        "side": "top"
-    },
-    {
-        "packagePinId": "39",
+        "packagePinId": "32",
         "name": "P1.11",
         "port": "P1",
         "pinIndex": 11,
@@ -471,7 +394,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "40",
+        "packagePinId": "33",
         "name": "P1.12",
         "port": "P1",
         "pinIndex": 12,
@@ -482,7 +405,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "41",
+        "packagePinId": "34",
         "name": "P1.13",
         "port": "P1",
         "pinIndex": 13,
@@ -493,7 +416,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "42",
+        "packagePinId": "35",
         "name": "P1.14",
         "port": "P1",
         "pinIndex": 14,
@@ -504,7 +427,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "43",
+        "packagePinId": "36",
         "name": "DECA",
         "port": null,
         "pinIndex": null,
@@ -514,7 +437,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "44",
+        "packagePinId": "37",
         "name": "VSS",
         "port": null,
         "pinIndex": null,
@@ -524,7 +447,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "45",
+        "packagePinId": "38",
         "name": "DECD",
         "port": null,
         "pinIndex": null,
@@ -534,7 +457,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "46",
+        "packagePinId": "39",
         "name": "DCC",
         "port": null,
         "pinIndex": null,
@@ -544,17 +467,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "47",
-        "name": "VDD",
-        "port": null,
-        "pinIndex": null,
-        "defaultType": "power_positive",
-        "isClockCapable": false,
-        "functions": ["Power supply"],
-        "side": "top"
-    },
-    {
-        "packagePinId": "48",
+        "packagePinId": "40",
         "name": "VDD",
         "port": null,
         "pinIndex": null,
@@ -586,13 +499,13 @@
         {
           "name": "SDI",
           "direction": "input",
-          "allowedGpio": ["P2.04", "P2.09"],
+          "allowedGpio": ["P2.04"],
           "driveStrengthRequirement": "extra high"
         },
         {
           "name": "CS",
           "direction": "inout",
-          "allowedGpio": ["P2.05", "P2.10"],
+          "allowedGpio": ["P2.05"],
           "driveStrengthRequirement": "extra high"
         },
         {
@@ -624,12 +537,12 @@
         {
           "name": "CTS",
           "direction": "output",
-          "allowedGpio": ["P2.04", "P2.09"]
+          "allowedGpio": ["P2.04"]
         },
         {
           "name": "RTS",
           "direction": "input",
-          "allowedGpio": ["P2.05", "P2.10"]
+          "allowedGpio": ["P2.05"]
         }
       ]
     },
@@ -639,16 +552,6 @@
       "baseAddress": "0x4008A000",
       "description": "Radio controlled GPIO for features like channel sounding antenna switching",
       "signals": [
-        {
-          "name": "RADIO[0]",
-          "direction": "output",
-          "allowedGpio": ["P1.09"]
-        },
-        {
-          "name": "RADIO[1]",
-          "direction": "output",
-          "allowedGpio": ["P1.10"]
-        },
         {
           "name": "RADIO[2]",
           "direction": "output",
@@ -783,12 +686,12 @@
         {
           "name": "SDI",
           "direction": "input",
-          "allowedGpio": ["P1*", "P2.09"]
+          "allowedGpio": ["P1*"]
         },
         {
           "name": "CS",
           "direction": "inout",
-          "allowedGpio": ["P1*", "P2.10"]
+          "allowedGpio": ["P1*"]
         },
         {
           "name": "DCX",
@@ -839,12 +742,12 @@
         {
           "name": "CTS",
           "direction": "output",
-          "allowedGpio": ["P1*", "P2.09"]
+          "allowedGpio": ["P1*"]
         },
         {
           "name": "RTS",
           "direction": "input",
-          "allowedGpio": ["P1*", "P2.10"]
+          "allowedGpio": ["P1*"]
         }
       ]
     },
@@ -1082,11 +985,6 @@
           "allowedGpio": ["P1.06"]
         },
         {
-          "name": "AIN3",
-          "direction": "analog_input",
-          "allowedGpio": ["P1.07"]
-        },
-        {
           "name": "AIN4",
           "direction": "analog_input",
           "allowedGpio": ["P1.11"]
@@ -1196,26 +1094,6 @@
           "allowedGpio": ["P1.05"]
         },
         {
-          "name": "ASO[1]",
-          "direction": "output",
-          "allowedGpio": ["P1.06"]
-        },
-        {
-          "name": "ASI[1]",
-          "direction": "output",
-          "allowedGpio": ["P1.07"]
-        },
-        {
-          "name": "ASO[2]",
-          "direction": "output",
-          "allowedGpio": ["P1.09"]
-        },
-        {
-          "name": "ASI[2]",
-          "direction": "output",
-          "allowedGpio": ["P1.10"]
-        },
-        {
           "name": "ASO[3]",
           "direction": "output",
           "allowedGpio": ["P1.11"]
@@ -1321,11 +1199,6 @@
       "baseAddress": "0x400E2000",
       "description": "Global Real-time Clock",
       "signals": [
-        {
-          "name": "PWM",
-          "direction": "output",
-          "allowedGpio": ["P0.03"]
-        },
         {
           "name": "LFCLKOUT",
           "direction": "output",

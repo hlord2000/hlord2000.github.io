@@ -155,10 +155,16 @@
         "properties": {
           "packagePinId": { "type": "string", "description": "Unique physical identifier on the package (e.g., '1', '48', 'A1', 'G7')." },
           "name": { "type": "string", "description": "Logical SoC signal name (e.g., 'P0.01', 'VDD', 'NC')." },
+          "port": { "type": ["string", "null"], "description": "GPIO port for GPIO pins, e.g., 'P0', 'P1'." },
+          "pinIndex": { "type": ["integer", "null"], "description": "Index of the pin within its port for GPIO pins." },
+          "functions": {
+            "type": "array",
+            "description": "List of functions available on this pin. E.g., ['AIN0', 'PWM_OUT2', 'GPIO'].",
+            "items": { "type": "string" }
+          },
           "defaultType": { "enum": ["io", "power_positive", "power_ground", "analog_special", "debug", "reset", "crystal_hf", "crystal_lf", "rf_antenna", "rf_control", "decoupling", "nc", "other_system"], "description": "Primary classification." },
           "isClockCapable": { "type": "boolean", "default": false },
           "powerDomain": { "type": "string" },
-          "notes": { "type": "string" },
           "renderOrder": { "type": "integer", "description": "For perimeter layouts, the sequential drawing order if 'packagePinId' is not numeric/sequential." },
           "side": { "enum": ["top", "bottom", "left", "right"], "description": "For perimeter layouts, which side the pin is on." },
           "gridCoordinates": { "type": "string", "description": "For grid layouts, e.g., 'A1', 'H12'."},

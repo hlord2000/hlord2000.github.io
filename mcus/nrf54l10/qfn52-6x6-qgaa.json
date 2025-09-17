@@ -1,9 +1,9 @@
 {
   "$schema": "../mcuSchema.json",
   "partInfo": {
-    "partNumber": "nRF54L15-QFAA",
-    "packageType": "QFN-48",
-    "sizeDescription": "6x6x0.85mm, 0.4mm pitch QFN-48",
+    "partNumber": "nRF54L10-QGAA",
+    "packageType": "QFN-52",
+    "sizeDescription": "6x6x0.85mm, 0.4mm pitch QFN-52",
     "datasheetVersion": "https://docs-be.nordicsemi.com/bundle/ps_nrf54L15/page/pdf/nRF54L15_nRF54L10_nRF54L05_Preliminary_Datasheet_v0.9.pdf"
   },
   "renderConfig": {
@@ -29,10 +29,10 @@
     "layoutStrategy": {
         "layoutType": "quadPerimeter",
         "pinCounts": {
-            "bottom": 12,
-            "left": 12,
-            "right": 12,
-            "top": 12
+            "bottom": 13,
+            "left": 13,
+            "right": 13,
+            "top": 13
         },
         "numberingStart": {
             "corner": "topLeft",
@@ -109,6 +109,16 @@
     },
     {
         "packagePinId": "6",
+        "name": "P1.16",
+        "port": "P1",
+        "pinIndex": 16,
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "peripheral",
+        "side": "left"
+    },
+    {
+        "packagePinId": "7",
         "name": "P1.05",
         "port": "P1",
         "pinIndex": 5,
@@ -119,7 +129,7 @@
         "side": "left"
     },
     {
-        "packagePinId": "7",
+        "packagePinId": "8",
         "name": "P1.06",
         "port": "P1",
         "pinIndex": 6,
@@ -130,7 +140,7 @@
         "side": "left"
     },
     {
-        "packagePinId": "8",
+        "packagePinId": "9",
         "name": "P1.07",
         "port": "P1",
         "pinIndex": 7,
@@ -141,7 +151,7 @@
         "side": "left"
     },
     {
-        "packagePinId": "9",
+        "packagePinId": "10",
         "name": "P1.08",
         "port": "P1",
         "pinIndex": 8,
@@ -152,7 +162,7 @@
         "side": "left"
     },
     {
-        "packagePinId": "10",
+        "packagePinId": "11",
         "name": "VDD",
         "port": null,
         "pinIndex": null,
@@ -162,7 +172,7 @@
         "side": "left"
     },
     {
-        "packagePinId": "11",
+        "packagePinId": "12",
         "name": "P2.00",
         "port": "P2",
         "pinIndex": 0,
@@ -173,7 +183,7 @@
         "side": "left"
     },
     {
-        "packagePinId": "12",
+        "packagePinId": "13",
         "name": "P2.01",
         "port": "P2",
         "pinIndex": 1,
@@ -184,7 +194,7 @@
         "side": "left"
     },
     {
-        "packagePinId": "13",
+        "packagePinId": "14",
         "name": "P2.02",
         "port": "P2",
         "pinIndex": 2,
@@ -195,7 +205,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "14",
+        "packagePinId": "15",
         "name": "P2.03",
         "port": "P2",
         "pinIndex": 3,
@@ -206,7 +216,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "15",
+        "packagePinId": "16",
         "name": "P2.04",
         "port": "P2",
         "pinIndex": 4,
@@ -217,7 +227,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "16",
+        "packagePinId": "17",
         "name": "P2.05",
         "port": "P2",
         "pinIndex": 5,
@@ -228,7 +238,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "17",
+        "packagePinId": "18",
         "name": "P2.06",
         "port": "P2",
         "pinIndex": 6,
@@ -239,7 +249,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "18",
+        "packagePinId": "19",
         "name": "P2.07",
         "port": "P2",
         "pinIndex": 7,
@@ -250,7 +260,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "19",
+        "packagePinId": "20",
         "name": "P2.08",
         "port": "P2",
         "pinIndex": 8,
@@ -261,7 +271,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "20",
+        "packagePinId": "21",
         "name": "P2.09",
         "port": "P2",
         "pinIndex": 9,
@@ -272,7 +282,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "21",
+        "packagePinId": "22",
         "name": "P2.10",
         "port": "P2",
         "pinIndex": 10,
@@ -283,7 +293,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "22",
+        "packagePinId": "23",
         "name": "VDD",
         "port": null,
         "pinIndex": null,
@@ -293,7 +303,18 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "23",
+        "packagePinId": "24",
+        "name": "P0.06",
+        "port": "P0",
+        "pinIndex": 6,
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "low_power",
+        "functions": ["Digital I/O"],
+        "side": "bottom"
+    },
+    {
+        "packagePinId": "25",
         "name": "P0.00",
         "port": "P0",
         "pinIndex": 0,
@@ -304,7 +325,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "24",
+        "packagePinId": "26",
         "name": "P0.01",
         "port": "P0",
         "pinIndex": 1,
@@ -315,7 +336,7 @@
         "side": "bottom"
     },
     {
-        "packagePinId": "25",
+        "packagePinId": "27",
         "name": "SWDIO",
         "port": null,
         "pinIndex": null,
@@ -325,7 +346,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "26",
+        "packagePinId": "28",
         "name": "SWDCLK",
         "port": null,
         "pinIndex": null,
@@ -335,7 +356,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "27",
+        "packagePinId": "29",
         "name": "P0.02",
         "port": "P0",
         "pinIndex": 2,
@@ -346,7 +367,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "28",
+        "packagePinId": "30",
         "name": "P0.03",
         "port": "P0",
         "pinIndex": 3,
@@ -357,7 +378,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "29",
+        "packagePinId": "31",
         "name": "P0.04",
         "port": "P0",
         "pinIndex": 4,
@@ -368,7 +389,18 @@
         "side": "right"
     },
     {
-        "packagePinId": "30",
+        "packagePinId": "32",
+        "name": "P0.05",
+        "port": "P0",
+        "pinIndex": 5,
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "low_power",
+        "functions": ["Digital I/O"],
+        "side": "right"
+    },
+    {
+        "packagePinId": "33",
         "name": "~{RESET}",
         "port": null,
         "pinIndex": null,
@@ -378,7 +410,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "31",
+        "packagePinId": "34",
         "name": "ANT",
         "port": null,
         "pinIndex": null,
@@ -388,7 +420,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "32",
+        "packagePinId": "35",
         "name": "VSS_PA",
         "port": null,
         "pinIndex": null,
@@ -398,7 +430,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "33",
+        "packagePinId": "36",
         "name": "DECRF",
         "port": null,
         "pinIndex": null,
@@ -408,7 +440,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "34",
+        "packagePinId": "37",
         "name": "XC1",
         "port": null,
         "pinIndex": null,
@@ -418,7 +450,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "35",
+        "packagePinId": "38",
         "name": "XC2",
         "port": null,
         "pinIndex": null,
@@ -428,7 +460,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "36",
+        "packagePinId": "39",
         "name": "VDD",
         "port": null,
         "pinIndex": null,
@@ -438,7 +470,7 @@
         "side": "right"
     },
     {
-        "packagePinId": "37",
+        "packagePinId": "40",
         "name": "P1.09",
         "port": "P1",
         "pinIndex": 9,
@@ -449,7 +481,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "38",
+        "packagePinId": "41",
         "name": "P1.10",
         "port": "P1",
         "pinIndex": 10,
@@ -460,7 +492,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "39",
+        "packagePinId": "42",
         "name": "P1.11",
         "port": "P1",
         "pinIndex": 11,
@@ -471,7 +503,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "40",
+        "packagePinId": "43",
         "name": "P1.12",
         "port": "P1",
         "pinIndex": 12,
@@ -482,7 +514,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "41",
+        "packagePinId": "44",
         "name": "P1.13",
         "port": "P1",
         "pinIndex": 13,
@@ -493,7 +525,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "42",
+        "packagePinId": "45",
         "name": "P1.14",
         "port": "P1",
         "pinIndex": 14,
@@ -504,7 +536,17 @@
         "side": "top"
     },
     {
-        "packagePinId": "43",
+        "packagePinId": "46",
+        "name": "P1.15",
+        "port": "P1",
+        "pinIndex": 15,
+        "defaultType": "io",
+        "isClockCapable": false,
+        "powerDomain": "peripheral",
+        "side": "top"
+    },
+    {
+        "packagePinId": "47",
         "name": "DECA",
         "port": null,
         "pinIndex": null,
@@ -514,7 +556,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "44",
+        "packagePinId": "48",
         "name": "VSS",
         "port": null,
         "pinIndex": null,
@@ -524,7 +566,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "45",
+        "packagePinId": "49",
         "name": "DECD",
         "port": null,
         "pinIndex": null,
@@ -534,7 +576,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "46",
+        "packagePinId": "50",
         "name": "DCC",
         "port": null,
         "pinIndex": null,
@@ -544,7 +586,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "47",
+        "packagePinId": "51",
         "name": "VDD",
         "port": null,
         "pinIndex": null,
@@ -554,7 +596,7 @@
         "side": "top"
     },
     {
-        "packagePinId": "48",
+        "packagePinId": "52",
         "name": "VDD",
         "port": null,
         "pinIndex": null,

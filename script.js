@@ -20,6 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('searchPeripherals').addEventListener('input', filterPeripherals);
     document.getElementById('xl1xl2-checkbox').addEventListener('change', toggleSimplePeripheral);
     document.getElementById('nfc-checkbox').addEventListener('change', toggleSimplePeripheral);
+    document.getElementById('sqspi-checkbox').addEventListener('change', toggleSimplePeripheral);
+
     document.querySelector('#pinSelectionModal .close').addEventListener('click', closePinSelectionModal);
     document.getElementById('closeImportModal').addEventListener('click', closeImportModal);
     document.getElementById('cancelPinSelection').addEventListener('click', closePinSelectionModal);
@@ -150,7 +152,7 @@ function organizePeripherals() {
 
     const peripheralGroups = {};
     mcuData.socPeripherals
-        .filter(p => p.id !== 'OSCILLATORS' && p.id !== 'NFCT') // Filter out OSCILLATORS and NFCT
+        .filter(p => p.id !== 'OSCILLATORS' && p.id !== 'NFCT' && p.id !== 'sQSPI') // Filter out special peripherals
         .forEach(p => {
             const baseName = p.id.replace(/\d+$/, '');
             if (!peripheralGroups[baseName]) {
@@ -353,6 +355,7 @@ function clearAllPeripherals(askConfirmation) {
     usedAddresses = {};
     document.getElementById('xl1xl2-checkbox').checked = false;
     document.getElementById('nfc-checkbox').checked = false;
+    document.getElementById('sqspi-checkbox').checked = false;
     if (mcuData.pins) {
         setHFXtalAsSystemRequirement(); // Re-apply system requirements
     }
@@ -371,10 +374,13 @@ function setHFXtalAsSystemRequirement() {
 
 function toggleSimplePeripheral(event) {
     const checkbox = event.target;
-    const id = checkbox.id === 'xl1xl2-checkbox' ? 'OSCILLATORS' : 'NFCT';
-    const peripheral = mcuData.socPeripherals.find(p => p.id === id);
+    const peripheralId = checkbox.dataset.peripheralId;
+    const peripheral = mcuData.socPeripherals.find(p => p.id === peripheralId);
 
-    if (!peripheral) return;
+    if (!peripheral) {
+        console.error(`Peripheral with ID '${peripheralId}' not found in socPeripherals.`);
+        return;
+    }
 
     const pinNames = peripheral.signals.map(s => s.allowedGpio[0]);
 

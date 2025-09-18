@@ -59,45 +59,8 @@
                 <h2>Available Peripherals</h2>
                 <input type="text" id="searchPeripherals" class="search-box" placeholder="Search peripherals...">
                 
-                <div class="simple-peripherals">
-                    <h3>Pin Specific Peripherals</h3>
-                    <div class="checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="xl1xl2-checkbox" data-peripheral-id="OSCILLATORS">
-                            <span>32.768 kHz Crystal (XL1/XL2)</span>
-                        </label>
-                        <div class="checkbox-description">Uses P1.00 and P1.01 for low-frequency crystal</div>
-                    </div>
-                    <div class="checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="nfc-checkbox" data-peripheral-id="NFCT">
-                            <span>NFC Antenna (NFC1/NFC2)</span>
-                        </label>
-                        <div class="checkbox-description">Uses P1.02 and P1.03 for NFC antenna</div>
-                    </div>
-                    <div class="checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="sqspi-checkbox" data-peripheral-id="sQSPI">
-                            <span>sQSPI Interface</span>
-                        </label>
-                        <div class="checkbox-description">Uses dedicated P2 pins for Quad SPI</div>
-                    </div>
-                </div>
-                
-                <!-- Single-instance peripherals section -->
-                <div class="peripherals-section">
-                    <div class="peripherals-heading">Single-Instance Peripherals</div>
-                    <div id="single-peripherals-container">
-                        <!-- Will be filled dynamically -->
-                    </div>
-                </div>
-                
-                <!-- Multiple-instance peripherals accordion section -->
-                <div class="peripherals-section">
-                    <div class="peripherals-heading">Multiple-Instance Peripherals</div>
-                    <div class="accordion" id="peripheralAccordion">
-                        <!-- Will be filled dynamically with multi-instance peripherals -->
-                    </div>
+                <div id="peripherals-list">
+                    <!-- Peripherals will be dynamically inserted here -->
                 </div>
             </div>
 

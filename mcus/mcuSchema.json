@@ -99,6 +99,7 @@
             "type": "string",
             "description": "Brief description of the peripheral's function."
           },
+          "uiHint": { "type": "string", "enum": ["normal", "checkbox"], "default": "normal", "description": "A hint for the UI on how to display this peripheral." },
           "signals": {
             "type": "array",
             "description": "Defines the individual signals (pins/lines) this peripheral requires or provides.",

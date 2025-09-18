@@ -18,10 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('exportBtn').addEventListener('click', exportConfiguration);
     document.getElementById('importBtn').addEventListener('click', openImportModal);
     document.getElementById('searchPeripherals').addEventListener('input', filterPeripherals);
-    document.getElementById('xl1xl2-checkbox').addEventListener('change', toggleSimplePeripheral);
-    document.getElementById('nfc-checkbox').addEventListener('change', toggleSimplePeripheral);
-    document.getElementById('sqspi-checkbox').addEventListener('change', toggleSimplePeripheral);
-
     document.querySelector('#pinSelectionModal .close').addEventListener('click', closePinSelectionModal);
     document.getElementById('closeImportModal').addEventListener('click', closeImportModal);
     document.getElementById('cancelPinSelection').addEventListener('click', closePinSelectionModal);
@@ -143,35 +139,88 @@ function reinitializeView(clearOnly = false) {
 // --- PERIPHERAL ORGANIZATION AND DISPLAY ---
 
 function organizePeripherals() {
-    const singleContainer = document.getElementById('single-peripherals-container');
-    const accordionContainer = document.getElementById('peripheralAccordion');
-    singleContainer.innerHTML = '';
-    accordionContainer.innerHTML = '';
+    const peripheralsListContainer = document.getElementById('peripherals-list');
+    if (!peripheralsListContainer) return;
+    peripheralsListContainer.innerHTML = '';
 
     if (!mcuData.socPeripherals) return;
 
-    const peripheralGroups = {};
-    mcuData.socPeripherals
-        .filter(p => p.id !== 'OSCILLATORS' && p.id !== 'NFCT' && p.id !== 'sQSPI') // Filter out special peripherals
-        .forEach(p => {
+    const checkboxPeripherals = [];
+    const singleInstancePeripherals = [];
+    const multiInstanceGroups = {};
+
+    // First, separate out checkbox peripherals and group the rest
+    mcuData.socPeripherals.forEach(p => {
+        if (p.uiHint === 'checkbox') {
+            checkboxPeripherals.push(p);
+        } else {
             const baseName = p.id.replace(/\d+$/, '');
-            if (!peripheralGroups[baseName]) {
-                peripheralGroups[baseName] = [];
+            if (!multiInstanceGroups[baseName]) {
+                multiInstanceGroups[baseName] = [];
             }
-            peripheralGroups[baseName].push(p);
+            multiInstanceGroups[baseName].push(p);
+        }
     });
 
-    for (const baseName in peripheralGroups) {
-        const peripherals = peripheralGroups[baseName];
-        if (peripherals.length === 1) {
-            const p = peripherals[0];
-            const btn = document.createElement('button');
-            btn.className = 'single-peripheral-btn';
-            btn.dataset.id = p.id;
-            btn.textContent = `${p.id} (${p.type})`;
-            btn.addEventListener('click', () => handlePeripheralClick(p));
-            singleContainer.appendChild(btn);
-        } else {
+    // Now separate single from multi-instance from the groups
+    for (const baseName in multiInstanceGroups) {
+        if (multiInstanceGroups[baseName].length === 1) {
+            singleInstancePeripherals.push(multiInstanceGroups[baseName][0]);
+            delete multiInstanceGroups[baseName];
+        }
+    }
+
+    // Sort the lists alphabetically
+    checkboxPeripherals.sort((a, b) => a.id.localeCompare(b.id));
+    singleInstancePeripherals.sort((a, b) => a.id.localeCompare(b.id));
+    const sortedMultiInstanceKeys = Object.keys(multiInstanceGroups).sort();
+
+    // Render checkbox peripherals
+    checkboxPeripherals.forEach(p => {
+        const checkboxGroup = document.createElement('div');
+        checkboxGroup.className = 'checkbox-group';
+        
+        const label = document.createElement('label');
+        label.className = 'checkbox-label';
+        
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `${p.id.toLowerCase()}-checkbox`;
+        checkbox.dataset.peripheralId = p.id;
+        checkbox.addEventListener('change', toggleSimplePeripheral);
+        
+        const span = document.createElement('span');
+        span.textContent = p.description;
+        
+        label.appendChild(checkbox);
+        label.appendChild(span);
+        
+        const description = document.createElement('div');
+        description.className = 'checkbox-description';
+        description.textContent = `Uses ${p.signals.map(s => s.allowedGpio.join('/')).join(', ')}`;
+
+        checkboxGroup.appendChild(label);
+        checkboxGroup.appendChild(description);
+        peripheralsListContainer.appendChild(checkboxGroup);
+    });
+
+    // Render single-instance peripherals
+    singleInstancePeripherals.forEach(p => {
+        const btn = document.createElement('button');
+        btn.className = 'single-peripheral-btn';
+        btn.dataset.id = p.id;
+        btn.textContent = `${p.id} (${p.type})`;
+        btn.addEventListener('click', () => handlePeripheralClick(p));
+        peripheralsListContainer.appendChild(btn);
+    });
+
+    // Render multi-instance peripherals
+    if (sortedMultiInstanceKeys.length > 0) {
+        const accordionContainer = document.createElement('div');
+        accordionContainer.className = 'accordion';
+        
+        sortedMultiInstanceKeys.forEach(baseName => {
+            const peripherals = multiInstanceGroups[baseName];
             const accordionItem = document.createElement('div');
             accordionItem.className = 'accordion-item';
             const header = document.createElement('div');
@@ -180,7 +229,7 @@ function organizePeripherals() {
             const content = document.createElement('div');
             content.className = 'accordion-content';
 
-            peripherals.forEach(p => {
+            peripherals.sort((a,b) => a.id.localeCompare(b.id)).forEach(p => {
                 const item = document.createElement('div');
                 item.className = 'peripheral-item';
                 item.dataset.id = p.id;
@@ -197,7 +246,8 @@ function organizePeripherals() {
             accordionItem.appendChild(header);
             accordionItem.appendChild(content);
             accordionContainer.appendChild(accordionItem);
-        }
+        });
+        peripheralsListContainer.appendChild(accordionContainer);
     }
 }
 
@@ -353,9 +403,9 @@ function clearAllPeripherals(askConfirmation) {
     selectedPeripherals = [];
     usedPins = {};
     usedAddresses = {};
-    document.getElementById('xl1xl2-checkbox').checked = false;
-    document.getElementById('nfc-checkbox').checked = false;
-    document.getElementById('sqspi-checkbox').checked = false;
+    document.querySelectorAll('.simple-peripherals input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+    });
     if (mcuData.pins) {
         setHFXtalAsSystemRequirement(); // Re-apply system requirements
     }

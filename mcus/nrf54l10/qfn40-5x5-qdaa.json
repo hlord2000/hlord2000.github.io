@@ -4,7 +4,7 @@
     "partNumber": "nRF54L10-QDAA",
     "packageType": "QFN-40",
     "sizeDescription": "5x5x0.85mm, 0.4mm pitch QFN-40",
-    "datasheetVersion": "https://docs-be.nordicsemi.com/bundle/ps_nrf54L15/page/pdf/nRF54L15_nRF54L10_nRF54L05_Preliminary_Datasheet_v0.9.pdf"
+    "datasheetVersion": "https://docs-be.nordicsemi.com/bundle/ps_nrf54L15/page/pdf/nRF54L10_nRF54L10_nRF54L05_Preliminary_Datasheet_v0.9.pdf"
   },
   "renderConfig": {
     "canvasDefaults": {
@@ -1344,6 +1344,51 @@
           "direction": "input",
           "allowedGpio": ["P1.01"],
           "isMandatory": true
+        }
+      ]
+    },
+    {
+      "id": "sQSPI",
+      "type": "sQSPI",
+      "baseAddress": "0x4004B000",
+      "description": "Quad Serial Peripheral Interface",
+      "uiHint": "checkbox",
+      "signals": [
+        {
+          "name": "SCK",
+          "direction": "output",
+          "isMandatory": true,
+          "allowedGpio": ["P2.01"]
+        },
+        {
+          "name": "CSN",
+          "direction": "output",
+          "isMandatory": true,
+          "allowedGpio": ["P2.05"]
+        },
+        {
+          "name": "D0",
+          "direction": "inout",
+          "isMandatory": true,
+          "allowedGpio": ["P2.02"]
+        },
+        {
+          "name": "D1",
+          "direction": "inout",
+          "isMandatory": true,
+          "allowedGpio": ["P2.04"]
+        },
+        {
+          "name": "D2",
+          "direction": "inout",
+          "isMandatory": true,
+          "allowedGpio": ["P2.03"]
+        },
+        {
+          "name": "D3",
+          "direction": "inout",
+          "isMandatory": true,
+          "allowedGpio": ["P2.00"]
         }
       ]
     }

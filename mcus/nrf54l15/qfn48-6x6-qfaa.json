@@ -1479,6 +1479,7 @@
       "type": "sQSPI",
       "baseAddress": "0x4004B000",
       "description": "Quad Serial Peripheral Interface",
+      "uiHint": "checkbox",
       "signals": [
         {
           "name": "SCK",
